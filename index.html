@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kharja · Plan your outing in Morocco</title>
+<meta name="description" content="Kharja helps groups plan an outing in Morocco by budget: best cafés, restaurants, rooftops and activities in Casablanca, Rabat, Marrakech, Tangier, Agadir, Fès and Khénifra, with the cost per person.">
+<meta property="og:title" content="Kharja · Split. Plan. Out. Together.">
+<meta property="og:description" content="Where to go out in Morocco, and what each person pays.">
+<meta property="og:image" content="img/friends-table.jpg">
+<meta name="theme-color" content="#0B7A80">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Readex+Pro:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: one mobile column. Controls on top, ranked places, sticky plan tray at the bottom. Casablanca = Atlantic teal + Art Deco sun. */
+:root{
+  --bg:#F3F6F6; --surface:#FFFFFF; --sunk:#E6EDEE; --fg:#0F2229; --muted:#5A6E74; --line:#D3DEE0;
+  --accent:#0B7A80; --accent-ink:#FFFFFF; --sun:#E9A824; --sun-ink:#2B1E00;
+  --ok:#1D8A4E; --warn:#B76E00; --over:#B23A3A;
+  --display:"Lalezar","Readex Pro",system-ui,sans-serif;
+  --body:"Readex Pro",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C171B; --surface:#13232A; --sunk:#0F1D22; --fg:#E6F0F1; --muted:#93A9AE; --line:#24393F;
+  --accent:#3FC1C6; --accent-ink:#04201F; --sun:#F2BD4A; --sun-ink:#2B1E00;
+  --ok:#53C985; --warn:#F0A945; --over:#F07A7A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C171B; --surface:#13232A; --sunk:#0F1D22; --fg:#E6F0F1; --muted:#93A9AE; --line:#24393F;
+  --accent:#3FC1C6; --accent-ink:#04201F; --sun:#F2BD4A; --sun-ink:#2B1E00;
+  --ok:#53C985; --warn:#F0A945; --over:#F07A7A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 140px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:18px}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand h1{font-family:var(--display);font-weight:400;font-size:40px;line-height:1;margin:0;color:var(--accent);letter-spacing:.5px}
+.brand span{color:var(--muted);font-size:13px}
+.langs{display:flex;background:var(--sunk);border-radius:999px;padding:3px}
+.langs button{border:0;background:none;padding:5px 11px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted)}
+.langs button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+
+:root{--art-sky:#CFE9EA;--art-sea:#7CC3C6;--art-arch:#F4F1EC;--art-coral:#E7735A;--art-glass:#F7D57A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--art-sky:#16323A;--art-sea:#1E5A60;--art-arch:#22414A;--art-coral:#E7866F;--art-glass:#F2BD4A}}
+:root[data-theme="dark"]{--art-sky:#16323A;--art-sea:#1E5A60;--art-arch:#22414A;--art-coral:#E7866F;--art-glass:#F2BD4A}
+header.top{flex-wrap:wrap}
+.signin{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:13.5px}
+.hero{display:flex;flex-direction:column;gap:8px}
+.hero-art{border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;max-width:100%}
+.hero-art img{display:block;width:100%;height:100%;object-fit:cover}
+.cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:4px}
+.btn.cta{background:var(--accent);color:var(--accent-ink);padding:12px 20px;font-size:15px}
+.link{border:0;background:none;color:var(--accent);font-weight:600;text-decoration:underline;padding:4px}
+.trust{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.trust li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.recap{display:flex;flex-direction:column;gap:10px}
+.story{align-self:center;width:min(260px,100%);aspect-ratio:9/16;border-radius:22px;padding:22px 18px;display:flex;flex-direction:column;justify-content:space-between;
+  background:linear-gradient(180deg,rgb(4 32 34 / .55),rgb(4 32 34 / .92) 55%),url(img/food-table.jpg) center/cover;color:#fff;box-shadow:0 10px 30px rgb(0 0 0 / .18);overflow:hidden}
+.story .s-top{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.story h4{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.05;margin:6px 0 0}
+.story ol{margin:0;padding-inline-start:18px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.story .s-num{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgb(255 255 255 / .3);padding-top:10px;font-size:12px}
+.story .s-num b{display:block;font-family:var(--display);font-weight:400;font-size:24px;color:#F7D57A}
+.story .s-brand{font-size:12px;opacity:.85;direction:ltr;text-align:center}
+.sheet-bg{position:fixed;inset:0;z-index:50;background:rgb(0 0 0 / .45);display:flex;align-items:flex-end;justify-content:center;
+  padding:0 max(0px,env(safe-area-inset-right,0px)) 0 max(0px,env(safe-area-inset-left,0px))}
+.sheet{background:var(--surface);width:min(480px,100%);border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;max-height:92vh;overflow:auto}
+.sheet-img{border-radius:14px;overflow:hidden;aspect-ratio:3/1;max-width:100%}
+.sheet-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:70% 35%}
+.sheet h3{margin:0;font-family:var(--display);font-weight:400;font-size:24px}
+.tabs{display:flex;background:var(--sunk);border-radius:999px;padding:3px}
+.tabs button{flex:1;border:0;background:none;border-radius:999px;padding:7px;font-weight:600;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+.sso{display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px;font-weight:600}
+.sso .g{font-weight:800;color:#4285F4}
+.sso .a::before{content:"";display:inline-block;width:12px;height:14px;border-radius:6px 6px 5px 5px;background:var(--fg)}
+.or{text-align:center;color:var(--muted);font-size:12.5px}
+#authForm{display:flex;flex-direction:column;gap:10px}
+.tagline{direction:ltr;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;margin-top:-8px;font-weight:500;color:var(--muted);font-size:15px}
+.tagline b{font-family:var(--display);font-weight:400;font-size:22px;color:var(--accent)}
+.tagline i{font-style:normal;opacity:.5}
+.tagline em{font-style:normal;font-size:12.5px;flex-basis:100%;direction:rtl;text-align:start}
+html[dir="ltr"] .tagline em{direction:ltr}
+.beta{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.08em;background:var(--sun);color:var(--sun-ink);border-radius:6px;padding:2px 6px;align-self:center}
+.demo{font-size:12.5px;color:var(--sun-ink);background:var(--sun);border-radius:10px;padding:8px 12px}
+
+.hero{margin:0}
+.hero h2{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.15;margin:0 0 6px;text-wrap:balance}
+.hero p{margin:0;color:var(--muted);max-width:60ch}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:16px}
+.row{display:flex;flex-direction:column;gap:8px}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stepper{display:flex;align-items:center;gap:12px}
+.stepper button{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);font-size:22px;line-height:1}
+.stepper output{font-family:var(--display);font-size:30px;min-width:2ch;text-align:center}
+.people-icons{color:var(--muted);font-size:13px}
+.budget{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.budget input{width:130px;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--sunk);font-size:20px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pp{display:flex;align-items:baseline;gap:8px;padding:10px 12px;border-radius:12px;background:var(--sunk)}
+.pp b{font-family:var(--display);font-weight:400;font-size:26px;color:var(--accent)}
+.pp span{color:var(--muted);font-size:13px}
+
+.suggest{border-radius:var(--r);padding:16px;background:var(--accent);color:var(--accent-ink);display:flex;flex-direction:column;gap:10px}
+.suggest h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px}
+.suggest ol{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:4px}
+.suggest .tot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600;border-top:1px solid rgb(255 255 255 / .3);padding-top:8px}
+.suggest button{align-self:flex-start;border:0;border-radius:999px;padding:8px 16px;background:var(--sun);color:var(--sun-ink);font-weight:700}
+.suggest.empty{background:var(--sunk);color:var(--fg)}
+
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.sec-h h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px}
+.sec-h span{color:var(--muted);font-size:13px}
+.list{display:flex;flex-direction:column;gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;grid-template-columns:1fr auto;gap:6px 12px}
+.card .name{font-weight:700;font-size:16px;min-width:0}
+.card .meta{grid-column:1;color:var(--muted);font-size:13px;min-width:0}
+.card .price{grid-column:2;grid-row:1 / span 2;text-align:end;align-self:start}
+.card .price b{display:block;font-size:17px}
+.card .price small{color:var(--muted);font-size:12px}
+.tags{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tag{font-size:12px;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.fit{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid currentColor}
+.fit.ok{color:var(--ok)} .fit.near{color:var(--warn)} .fit.over{color:var(--over)}
+.src{font-size:11.5px;color:var(--muted)}
+.src a{color:inherit}
+.add{grid-column:1 / -1;justify-self:start;border:1px solid var(--accent);color:var(--accent);background:none;border-radius:999px;padding:6px 14px;font-weight:600;font-size:13.5px}
+.add[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+details.over-list summary{cursor:pointer;color:var(--muted);font-size:14px;padding:6px 0}
+
+.tray{position:fixed;inset:auto 0 0 0;z-index:20;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 24px rgb(0 0 0 / .08);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.tray-in{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:8px}
+.tray-line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tray-line .t{font-weight:700}
+.tray-line .left{font-size:13px}
+.left.ok{color:var(--ok)} .left.over{color:var(--over)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.wa{background:#1FA855;color:#fff}
+.btn.ghost{background:var(--sunk);color:var(--fg)}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.stops{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.friend{background:var(--surface);border:2px dashed var(--accent);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px}
+.friend h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px}
+.vote{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.vote:last-of-type{border-bottom:0}
+.vote .vb{display:flex;gap:6px}
+.vote .vb button{border:1px solid var(--line);background:var(--sunk);border-radius:10px;padding:5px 10px}
+.vote .vb button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted)}
+.cities{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-inline:-4px;padding-inline:4px}
+.cities::-webkit-scrollbar{display:none}
+.city{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 14px;display:flex;flex-direction:column;align-items:flex-start;gap:0;min-width:92px}
+.city b{font-weight:700;font-size:15px}
+.city small{color:var(--muted);font-size:11.5px}
+.city[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.city[aria-pressed="true"] small{color:inherit;opacity:.75}
+.city.soon{border-style:dashed;color:var(--muted)}
+.biz{background:var(--sunk);border-radius:var(--r);padding:18px 16px;display:flex;flex-direction:column;gap:14px}
+.biz-h h3{margin:0 0 4px;font-family:var(--display);font-weight:400;font-size:24px}
+.biz-h p{margin:0;color:var(--muted)}
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.tier b{font-size:15px}
+.tier.feat{border:2px solid var(--sun)}
+.tier ul{margin:0;padding-inline-start:18px;color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:2px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld.wide{grid-column:1 / -1}
+.fld label{font-size:12.5px;font-weight:600;color:var(--muted)}
+.fld input,.fld select{padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface);width:100%}
+@media (max-width:420px){.f2{grid-template-columns:1fr}}
+.btn.send{background:var(--accent);color:var(--accent-ink);margin-top:10px}
+footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:4px}
+footer a{color:inherit}
+@media (prefers-reduced-motion:no-preference){.card,.chip,.add{transition:background .15s,color .15s,border-color .15s}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap" id="app">
+  <header class="top">
+    <div class="brand"><h1 id="brandName">خرجة</h1><span class="beta">BETA</span><span id="brandSub"></span></div>
+    <div class="langs" role="group" aria-label="Language">
+      <button id="l-ar" data-l="ar">ع</button><button id="l-fr" data-l="fr">FR</button><button id="l-en" data-l="en">EN</button><button id="l-es" data-l="es">ES</button><button id="l-pt" data-l="pt">PT</button>
+    </div>
+    <button class="signin" id="signinBtn"></button>
+  </header>
+  <div class="tagline" aria-label="Split. Plan. Out. Together."><span><b>S</b>plit</span><i>·</i><span><b>P</b>lan</span><i>·</i><span><b>O</b>ut</span><i>·</i><span><b>T</b>ogether</span><em id="tagTr"></em></div>
+  <div class="demo" id="demoNote"></div>
+
+  <section class="hero">
+    <div class="hero-art"><img src="img/friends-table.jpg" alt="Friends sharing a meal outdoors" fetchpriority="high" width="1000" height="667"></div>
+    <h2 id="heroT"></h2><p id="heroP"></p>
+    <div class="cta-row"><button class="btn cta" id="ctaSignup"></button><button class="link" id="ctaSignin"></button></div>
+    <ul class="trust" id="trust"></ul>
+  </section>
+
+  <div class="cities" id="cityChips" role="group" aria-label="City"></div>
+
+  <section class="panel" aria-label="Plan settings">
+    <div class="row">
+      <span class="lbl" id="lblPeople"></span>
+      <div class="stepper">
+        <button id="minus" aria-label="−">−</button>
+        <output id="people" class="num">4</output>
+        <button id="plus" aria-label="+">+</button>
+        <span class="people-icons" id="peopleIcons"></span>
+      </div>
+    </div>
+    <div class="row">
+      <label class="lbl" for="budget" id="lblBudget"></label>
+      <div class="budget"><input id="budget" type="number" inputmode="numeric" min="0" step="50" value="600" class="num"><span id="mad">درهم</span></div>
+      <div class="chips" id="budgetChips"></div>
+      <div class="pp"><b class="num" id="ppVal">150</b><span id="ppLbl"></span></div>
+    </div>
+    <div class="row">
+      <span class="lbl" id="lblVibe"></span>
+      <div class="chips" id="vibeChips"></div>
+    </div>
+    <div class="row">
+      <span class="lbl" id="lblType"></span>
+      <div class="chips" id="typeChips"></div>
+    </div>
+  </section>
+
+  <section id="friendView" hidden></section>
+  <section id="suggest" class="suggest" aria-live="polite"></section>
+
+  <section>
+    <div class="sec-h"><h3 id="resT"></h3><span id="resN" class="num"></span></div>
+    <div class="list" id="list"></div>
+    <details class="over-list" id="overWrap"><summary id="overSum"></summary><div class="list" id="overList"></div></details>
+  </section>
+
+  <section class="recap">
+    <div class="sec-h"><h3 id="recT"></h3></div>
+    <p class="note" id="recP" style="margin:0"></p>
+    <div class="story" id="story"></div>
+    <button class="btn ghost" id="storyBtn"></button>
+    <p class="note" id="storyMsg" role="status"></p>
+  </section>
+
+  <section class="biz" id="biz">
+    <div class="biz-h"><h3 id="bizT"></h3><p id="bizP"></p></div>
+    <div class="tiers" id="tiers"></div>
+    <form id="bizForm" novalidate>
+      <div class="f2">
+        <div class="fld"><label for="bz-name" id="bzLName"></label><input id="bz-name" required autocomplete="organization"></div>
+        <div class="fld"><label for="bz-city" id="bzLCity"></label><select id="bz-city"></select></div>
+        <div class="fld"><label for="bz-type" id="bzLType"></label><select id="bz-type"></select></div>
+        <div class="fld"><label for="bz-price" id="bzLPrice"></label><input id="bz-price" inputmode="numeric" placeholder="80–150"></div>
+        <div class="fld wide"><label for="bz-contact" id="bzLContact"></label><input id="bz-contact" placeholder="@instagram / 06…" required></div>
+      </div>
+      <button class="btn send" id="bzSend" type="submit"></button>
+      <p class="note" id="bzMsg" role="status"></p>
+    </form>
+  </section>
+
+  <footer>
+    <span id="foot1"></span>
+    <span id="foot2"></span>
+  </footer>
+</div>
+
+<div class="sheet-bg" id="authBg" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="authT">
+    <div class="sheet-img"><img src="img/beach.jpg" alt="" width="1000" height="663"></div>
+    <div class="tabs" role="tablist"><button id="tab-up" role="tab"></button><button id="tab-in" role="tab"></button></div>
+    <h3 id="authT"></h3>
+    <button class="sso" id="ssoG"><span class="g">G</span><span id="ssoGt"></span></button>
+    <button class="sso" id="ssoA"><span class="a"></span><span id="ssoAt"></span></button>
+    <div class="or" id="orT"></div>
+    <form id="authForm" novalidate>
+      <div class="fld" id="nameFld"><label for="au-name" id="auLName"></label><input id="au-name" autocomplete="given-name"></div>
+      <div class="fld"><label for="au-email" id="auLEmail"></label><input id="au-email" type="email" autocomplete="email"></div>
+      <div class="fld"><label for="au-pass" id="auLPass"></label><input id="au-pass" type="password" autocomplete="current-password"></div>
+      <button class="btn cta" type="submit" id="auSend"></button>
+    </form>
+    <p class="note" id="auMsg" role="status"></p>
+    <p class="note" id="auLegal"></p>
+    <button class="link" id="authClose"></button>
+  </div>
+</div>
+
+<div class="tray" id="tray">
+  <div class="tray-in">
+    <div class="tray-line"><span class="t num" id="trayT"></span><span class="left num" id="trayLeft"></span></div>
+    <div class="stops" id="trayStops"></div>
+    <div class="actions">
+      <a class="btn wa" id="waBtn" target="_blank" rel="noopener" href="#">WhatsApp</a>
+      <button class="btn ghost" id="copyBtn"></button>
+      <button class="btn ghost" id="friendBtn"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Sources ---------- */
+const SRC = {
+  os26:{t:"Openshores – Coût de la vie à Casablanca (mars 2026)",u:"https://www.openshores.co/blog/maroc/casablanca/cout-de-la-vie-a-casablanca"},
+  rfk:{t:"Restaurants for Kings – Rick's Café",u:"https://restaurantsforkings.com/city/casablanca/ricks-cafe-casablanca"},
+  l360:{t:"Le360 – Escape games Casablanca (2018)",u:"https://fr.le360.ma/lifestyle/loisirs-les-3-escape-games-a-tester-avec-ou-sans-vos-enfants-178973/"},
+  rtg:{t:"The Rooftop Guide – Casablanca",u:"https://www.therooftopguide.com/rooftop-bars-in-casablanca.html"},
+  exp:{t:"Expedia – Hassan II Mosque tickets",u:"https://www.expedia.com/things-to-do/casablanca-instant-access-entry-tickets-to-hassan-ii-mosque.a47299986.activity-details"},
+  mwn:{t:"MWN Lifestyle – Best spots to eat in Casablanca (2026)",u:"https://mwnlifestyle.com/2026/07/23/best-spots-to-eat-in-casablanca/"},
+  expat:{t:"Expat.com – Leisure in Casablanca (2022)",u:"https://www.expat.com/en/guide/africa/morocco/casablanca/17693-leisure-in-casablanca.html"}
+};
+/* p: [min,max] MAD per person · q: "src" price from a published source, "est" estimate · max: max group per booking */
+const P = [
+ {id:1,n:"Corniche Aïn Diab",a:"Aïn Diab",c:"free",v:"casual",p:[0,30],q:"est",tg:["sea","sunset"],s:"expat"},
+ {id:2,n:"Parc de la Ligue Arabe",a:"Centre-ville",c:"free",v:"casual",p:[0,20],q:"est",tg:["park"]},
+ {id:3,n:"Esplanade Mosquée Hassan II",a:"Front de mer",c:"free",v:"casual",p:[0,20],q:"est",tg:["view","sea"]},
+ {id:4,n:"Visite Mosquée Hassan II",a:"Front de mer",c:"act",v:"casual",p:[160,190],q:"src",tg:["culture","guided"],s:"exp"},
+ {id:5,n:"Médina & Marché Central",a:"Médina",c:"food",v:"casual",p:[20,80],q:"src",tg:["street","traditional"],s:"os26"},
+ {id:6,n:"Venezia Ice",a:"Plusieurs adresses",c:"cafe",v:"casual",p:[25,60],q:"est",tg:["sweet"]},
+ {id:7,n:"Amoud",a:"Maârif",c:"cafe",v:"casual",p:[30,80],q:"est",tg:["sweet","traditional"]},
+ {id:8,n:"Paul",a:"Anfa",c:"cafe",v:"chic",p:[70,140],q:"est",tg:["brunch"]},
+ {id:9,n:"Holy Brunch",a:"Casablanca",c:"cafe",v:"chic",p:[120,200],q:"est",tg:["brunch"],s:"mwn"},
+ {id:10,n:"Morocco Mall (food court)",a:"Aïn Diab",c:"food",v:"casual",p:[60,120],q:"est",tg:["mall","family"]},
+ {id:11,n:"La Sqala",a:"Médina / Port",c:"food",v:"chic",p:[150,250],q:"est",tg:["traditional","garden"],s:"os26"},
+ {id:12,n:"Mood's Café-Restaurant",a:"Marina",c:"food",v:"chic",p:[100,200],q:"est",tg:["live","sea"],s:"mwn"},
+ {id:13,n:"Green Black",a:"Marina Mall",c:"food",v:"chic",p:[150,280],q:"est",tg:["italian"],s:"mwn"},
+ {id:14,n:"El Gousto",a:"Casablanca",c:"food",v:"chic",p:[150,250],q:"est",tg:["italian","seafood"],s:"mwn"},
+ {id:15,n:"Dar El Kaid",a:"Médina",c:"food",v:"chic",p:[250,400],q:"est",tg:["show","traditional"],s:"mwn"},
+ {id:16,n:"Dar Dada",a:"Casablanca",c:"food",v:"chic",p:[250,400],q:"est",tg:["show","traditional"],s:"mwn"},
+ {id:17,n:"Rick's Café",a:"Médina · Bd Sour Jdid",c:"food",v:"luxe",p:[330,480],q:"src",tg:["iconic","live"],s:"rfk"},
+ {id:18,n:"La Pergola",a:"Le Casablanca Hôtel",c:"food",v:"luxe",p:[300,500],q:"est",tg:["french"],s:"mwn"},
+ {id:19,n:"The Jame's Rooftop",a:"Quartier d'affaires",c:"roof",v:"luxe",p:[200,400],q:"est",tg:["view"],s:"rtg"},
+ {id:20,n:"Le Bir by Adagio",a:"Centre-ville",c:"roof",v:"chic",p:[200,350],q:"est",tg:["view"],s:"rtg"},
+ {id:21,n:"16ème Floor",a:"Quartier d'affaires",c:"roof",v:"luxe",p:[300,550],q:"est",tg:["view"],s:"rtg"},
+ {id:22,n:"Sky Bar Casablanca",a:"Corniche",c:"roof",v:"luxe",p:[300,550],q:"est",tg:["view","sea"],s:"rtg"},
+ {id:23,n:"Sky 28 · Kenzi Tower",a:"Quartier d'affaires",c:"roof",v:"luxe",p:[300,600],q:"est",tg:["view","iconic"],s:"rtg"},
+ {id:24,n:"Megarama",a:"Corniche",c:"act",v:"casual",p:[55,80],q:"src",tg:["cinema"],s:"os26"},
+ {id:25,n:"IMAX Morocco Mall",a:"Aïn Diab",c:"act",v:"casual",p:[70,110],q:"est",tg:["cinema"]},
+ {id:26,n:"Aquadream (Morocco Mall)",a:"Aïn Diab",c:"act",v:"casual",p:[60,120],q:"est",tg:["family"]},
+ {id:27,n:"Escape Legend",a:"Racine",c:"act",v:"casual",p:[160,225],q:"src",tg:["game"],s:"l360",max:8},
+ {id:28,n:"The Escape Hunt",a:"Palmier",c:"act",v:"casual",p:[200,200],q:"src",tg:["game"],s:"l360",max:7},
+ {id:29,n:"The Doorz Escape Room",a:"Anfa Place",c:"act",v:"casual",p:[150,180],q:"src",tg:["game"],s:"l360",max:8},
+ {id:30,n:"Sindibad (manèges & karting)",a:"Aïn Diab",c:"act",v:"casual",p:[80,200],q:"est",tg:["fun","family"]},
+ {id:31,n:"Bowling Dar Bouazza",a:"Dar Bouazza",c:"act",v:"casual",p:[50,120],q:"est",tg:["game"],s:"expat"},
+ /* Rabat */
+ {id:40,y:"rabat",n:"Kasbah des Oudayas",a:"Oudayas",c:"free",v:"casual",p:[0,20],q:"est",tg:["view","sea","culture"]},
+ {id:41,y:"rabat",n:"Café Maure",a:"Oudayas",c:"cafe",v:"casual",p:[20,50],q:"est",tg:["view","sweet","traditional"]},
+ {id:42,y:"rabat",n:"Tour Hassan & Mausolée Mohammed V",a:"Hassan",c:"free",v:"casual",p:[0,0],q:"est",tg:["culture","iconic"]},
+ {id:43,y:"rabat",n:"Le Dhow",a:"Bouregreg",c:"food",v:"chic",p:[200,400],q:"est",tg:["view","iconic"]},
+ {id:44,y:"rabat",n:"Médina de Rabat",a:"Médina",c:"food",v:"casual",p:[20,70],q:"est",tg:["street","traditional"]},
+ /* Marrakech */
+ {id:50,y:"rak",n:"Jemaa el-Fna",a:"Médina",c:"food",v:"casual",p:[30,100],q:"est",tg:["street","show","iconic"]},
+ {id:51,y:"rak",n:"Café des Épices",a:"Rahba Kedima",c:"cafe",v:"casual",p:[30,80],q:"est",tg:["view","traditional"]},
+ {id:52,y:"rak",n:"Jardin Majorelle",a:"Guéliz",c:"act",v:"casual",p:[120,200],q:"est",tg:["garden","iconic"]},
+ {id:53,y:"rak",n:"Nomad",a:"Médina",c:"roof",v:"chic",p:[150,300],q:"est",tg:["view"]},
+ {id:54,y:"rak",n:"Le Jardin",a:"Médina",c:"food",v:"chic",p:[150,250],q:"est",tg:["garden"]},
+ {id:55,y:"rak",n:"Koutoubia & jardins",a:"Médina",c:"free",v:"casual",p:[0,0],q:"est",tg:["garden","iconic"]},
+ /* Tanger */
+ {id:60,y:"tng",n:"Café Hafa",a:"Marshan",c:"cafe",v:"casual",p:[10,40],q:"est",tg:["sea","sunset","iconic"]},
+ {id:61,y:"tng",n:"Grand Café de Paris",a:"Place de France",c:"cafe",v:"casual",p:[20,50],q:"est",tg:["iconic"]},
+ {id:62,y:"tng",n:"Grottes d'Hercule",a:"Cap Spartel",c:"act",v:"casual",p:[0,60],q:"est",tg:["sea","iconic"]},
+ {id:63,y:"tng",n:"Kasbah & Médina de Tanger",a:"Kasbah",c:"free",v:"casual",p:[0,30],q:"est",tg:["view","culture"]},
+ /* Agadir */
+ {id:70,y:"aga",n:"Plage & Corniche d'Agadir",a:"Front de mer",c:"free",v:"casual",p:[0,30],q:"est",tg:["sea","sunset"]},
+ {id:71,y:"aga",n:"Agadir Oufella (téléphérique)",a:"Agadir Oufella",c:"act",v:"casual",p:[50,120],q:"est",tg:["view","culture"]},
+ {id:72,y:"aga",n:"Souk El Had",a:"Centre",c:"food",v:"casual",p:[20,60],q:"est",tg:["street","traditional"]},
+ {id:73,y:"aga",n:"Marina d'Agadir",a:"Marina",c:"food",v:"chic",p:[150,300],q:"est",tg:["sea","seafood"]},
+ /* Fès */
+ {id:80,y:"fes",n:"Médina de Fès & tanneries Chouara",a:"Fès el-Bali",c:"free",v:"casual",p:[0,30],q:"est",tg:["culture","iconic"]},
+ {id:81,y:"fes",n:"Medersa Bou Inania",a:"Fès el-Bali",c:"act",v:"casual",p:[20,40],q:"est",tg:["culture"]},
+ {id:82,y:"fes",n:"Café Clock",a:"Fès el-Bali",c:"food",v:"casual",p:[60,140],q:"est",tg:["view","live"]},
+ {id:83,y:"fes",n:"Bab Boujloud street food",a:"Bab Boujloud",c:"food",v:"casual",p:[20,60],q:"est",tg:["street","traditional"]},
+ /* Khénifra */
+ {id:90,y:"khn",n:"Sources de l'Oum Er-Rbia",a:"Moyen Atlas (~40 km)",c:"act",v:"casual",p:[0,50],q:"est",tg:["nature","iconic"]},
+ {id:91,y:"khn",n:"Lac Aguelmam Azigza",a:"Parc national de Khénifra",c:"free",v:"casual",p:[0,30],q:"est",tg:["lake","forest","nature"]},
+ {id:92,y:"khn",n:"Vieux pont & kasbah sur l'Oum Er-Rbia",a:"Centre",c:"free",v:"casual",p:[0,0],q:"est",tg:["culture","view"]},
+ {id:93,y:"khn",n:"Forêt de cèdres du Moyen Atlas",a:"Parc national de Khénifra",c:"free",v:"casual",p:[0,20],q:"est",tg:["forest","nature"]},
+ {id:94,y:"khn",n:"Souk de Khénifra",a:"Centre",c:"food",v:"casual",p:[15,50],q:"est",tg:["street","traditional"]},
+ {id:95,y:"khn",n:"Rahou Rania",a:"Khénifra",c:"food",v:"casual",p:[50,120],q:"est",tg:["seafood","italian"]},
+ {id:96,y:"khn",n:"Venezia · Café, Restaurant & Pizzeria",a:"Khénifra",c:"food",v:"casual",p:[30,80],q:"est",tg:["italian"]},
+ {id:97,y:"khn",n:"Adrare Friends",a:"Khénifra",c:"food",v:"casual",p:[50,120],q:"est",tg:["fun"]},
+ {id:98,y:"khn",n:"Restaurant Jennate Assaouir",a:"Khénifra",c:"food",v:"chic",p:[60,130],q:"est",tg:["traditional"]},
+ {id:99,y:"khn",n:"La Tente Amazighe",a:"Khénifra",c:"food",v:"casual",p:[50,120],q:"est",tg:["traditional","show"]},
+ {id:100,y:"khn",n:"La Fontaine · Café & Pâtisserie",a:"Khénifra",c:"cafe",v:"casual",p:[15,50],q:"est",tg:["sweet"]},
+ {id:101,y:"khn",n:"Akabar",a:"Khénifra",c:"cafe",v:"casual",p:[15,50],q:"est",tg:["sweet"]},
+ {id:102,y:"khn",n:"Islane · Boulangerie & Pâtisserie",a:"Khénifra",c:"cafe",v:"casual",p:[15,50],q:"est",tg:["sweet","brunch"]},
+ {id:103,y:"khn",n:"Brek Aqua Park",a:"Khénifra",c:"act",v:"casual",p:[50,100],q:"est",tg:["fun","family"]}
+];
+P.forEach(p=>{if(!p.y)p.y="casa"});
+const CITIES=[["casa","Casablanca","الدار البيضاء"],["rabat","Rabat","الرباط"],["rak","Marrakech","مراكش"],["tng","Tanger","طنجة"],["aga","Agadir","أكادير"],["fes","Fès","فاس"],["khn","Khénifra","خنيفرة"]];
+
+/* ---------- i18n ---------- */
+const T = {
+ ar:{dir:"rtl",brand:"خرجة",sub:"كازا",demo:"نسخة تجريبية للفكرة. الأماكن حقيقية، والأسعار من مصادر منشورة أو تقديرية، وتحتاج تحققاً قبل الإطلاق.",
+  heroT:"فين نخرجو اليوم؟",heroP:"قل لنا كم أنتم وكم معكم، ونعطيك أحسن الأماكن في كازا وشحال غادي يخلص كل واحد.",
+  people:"كم شخصاً؟",budget:"الميزانية الكاملة للمجموعة",mad:"درهم",pp:"لكل شخص",vibe:"نوع الخرجة",type:"شنو بغيتو؟",
+  vibes:{any:"الكل",casual:"عادية",chic:"شيك",luxe:"فاخرة"},
+  cats:{all:"الكل",free:"مجاني",cafe:"قهوة",food:"ماكلة",roof:"روف توب",act:"نشاط"},
+  sugT:"خطة مقترحة لكم",sugNone:"ما لقيناش خطة من جوج بلايص فهاد الميزانية. زيدو الميزانية شوية ولا بدلو النوع.",sugUse:"خذ هاد الخطة",
+  resT:"أماكن تناسبكم",resN:n=>n+" مكان",overSum:n=>"أعلى من ميزانيتكم ("+n+")",
+  fit:{ok:"ضمن الميزانية",near:"ممكن",over:"أغلى"},perP:"للشخص",total:"للمجموعة",free:"مجاني",
+  add:"زيد للخطة",added:"✓ في الخطة",src:"السعر من: ",est:"سعر تقديري · يحتاج تحقق",grp:m=>"حتى "+m+" أشخاص فالغرفة",
+  tg:{sea:"البحر",sunset:"الغروب",park:"حديقة",view:"منظر",culture:"ثقافة",guided:"مع مرشد",street:"أكل الزنقة",traditional:"مغربي",sweet:"حلويات",brunch:"برانش",mall:"مول",family:"عائلي",garden:"جردة",live:"موسيقى حية",italian:"إيطالي",seafood:"حوت",show:"عرض",iconic:"مشهور",french:"فرنسي",cinema:"سينما",game:"لعبة",fun:"متعة"},
+  trayEmpty:"زيد بلايص للخطة باش تشاركها",trayT:(pp,tot)=>"الخطة: "+pp+" للشخص · "+tot+" للمجموعة",
+  left:r=>r>=0?"باقي "+r+" درهم":"زايد "+(-r)+" درهم على الميزانية",copy:"نسخ",copied:"تنسخ ✓",friend:"شوف كيف كتبان لصحابك",
+  frT:"خطة من صاحبك 👋",frP:"صوّت على كل بلاصة. فالنسخة الحقيقية الأصوات كتوصل للمجموعة كاملة.",frClose:"رجع للخطة ديالي",yes:"👍 موافق",no:"👎 لا",
+  wa:(n,b,stops,pp,tot)=>"🗓️ خرجة فكازا\n👥 "+n+" أشخاص · ميزانية "+b+" درهم\n\n"+stops+"\n\n💸 تقريباً "+pp+" درهم للشخص ("+tot+" للمجموعة)\nواش موافقين؟",
+  foot1:"الأسعار بالدرهم المغربي (MAD)، وتقريبية.",foot2:"المصادر: "},
+ fr:{dir:"ltr",brand:"Kharja",sub:"Casa",demo:"Démo du concept. Lieux réels ; prix issus de sources publiées ou estimés, à vérifier avant le lancement.",
+  heroT:"On sort où ce soir ?",heroP:"Dites-nous combien vous êtes et votre budget : on vous donne les meilleurs spots de Casa et combien chacun va payer.",
+  people:"Combien de personnes ?",budget:"Budget total du groupe",mad:"DH",pp:"par personne",vibe:"Ambiance",type:"Vous cherchez quoi ?",
+  vibes:{any:"Tout",casual:"Décontracté",chic:"Chic",luxe:"Luxe"},
+  cats:{all:"Tout",free:"Gratuit",cafe:"Café",food:"Resto",roof:"Rooftop",act:"Activité"},
+  sugT:"Plan proposé",sugNone:"Aucun plan à deux étapes dans ce budget. Augmentez un peu le budget ou changez d'ambiance.",sugUse:"Prendre ce plan",
+  resT:"Lieux pour vous",resN:n=>n+" lieux",overSum:n=>"Au-dessus de votre budget ("+n+")",
+  fit:{ok:"Dans le budget",near:"Possible",over:"Trop cher"},perP:"/ pers.",total:"groupe",free:"Gratuit",
+  add:"Ajouter au plan",added:"✓ Dans le plan",src:"Prix : ",est:"Prix estimé · à vérifier",grp:m=>"Jusqu'à "+m+" pers. par salle",
+  tg:{sea:"Mer",sunset:"Coucher de soleil",park:"Parc",view:"Vue",culture:"Culture",guided:"Guidé",street:"Street food",traditional:"Marocain",sweet:"Sucré",brunch:"Brunch",mall:"Mall",family:"Famille",garden:"Jardin",live:"Live",italian:"Italien",seafood:"Poisson",show:"Spectacle",iconic:"Iconique",french:"Français",cinema:"Cinéma",game:"Jeu",fun:"Fun"},
+  trayEmpty:"Ajoutez des lieux pour partager le plan",trayT:(pp,tot)=>"Plan : "+pp+" / pers. · "+tot+" groupe",
+  left:r=>r>=0?"Reste "+r+" DH":"Dépasse de "+(-r)+" DH",copy:"Copier",copied:"Copié ✓",friend:"Vue de vos amis",
+  frT:"Plan d'un ami 👋",frP:"Votez pour chaque lieu. Dans la vraie app, les votes arrivent à tout le groupe.",frClose:"Retour à mon plan",yes:"👍 Oui",no:"👎 Non",
+  wa:(n,b,stops,pp,tot)=>"🗓️ Sortie à Casa\n👥 "+n+" pers. · budget "+b+" DH\n\n"+stops+"\n\n💸 Environ "+pp+" DH / pers. ("+tot+" pour le groupe)\nVous êtes chauds ?",
+  foot1:"Prix en dirhams marocains (MAD), approximatifs.",foot2:"Sources : "},
+ en:{dir:"ltr",brand:"Kharja",sub:"Casablanca",demo:"Concept demo. Real places; prices from published sources or estimated, to be checked before launch.",
+  heroT:"Where are we going out?",heroP:"Tell us how many you are and your budget. We'll show the best spots in Casablanca and what each person pays.",
+  people:"How many people?",budget:"Total group budget",mad:"MAD",pp:"per person",vibe:"Vibe",type:"Looking for",
+  vibes:{any:"Any",casual:"Casual",chic:"Chic",luxe:"Luxury"},
+  cats:{all:"All",free:"Free",cafe:"Café",food:"Food",roof:"Rooftop",act:"Activity"},
+  sugT:"Suggested plan",sugNone:"No two-stop plan fits this budget. Raise it a little or change the vibe.",sugUse:"Use this plan",
+  resT:"Places that fit",resN:n=>n+" places",overSum:n=>"Above your budget ("+n+")",
+  fit:{ok:"In budget",near:"Maybe",over:"Too pricey"},perP:"/ person",total:"group",free:"Free",
+  add:"Add to plan",added:"✓ In plan",src:"Price from: ",est:"Estimated price · needs checking",grp:m=>"Up to "+m+" per room",
+  tg:{sea:"Sea",sunset:"Sunset",park:"Park",view:"View",culture:"Culture",guided:"Guided",street:"Street food",traditional:"Moroccan",sweet:"Sweets",brunch:"Brunch",mall:"Mall",family:"Family",garden:"Garden",live:"Live music",italian:"Italian",seafood:"Seafood",show:"Show",iconic:"Iconic",french:"French",cinema:"Cinema",game:"Game",fun:"Fun"},
+  trayEmpty:"Add places to share a plan",trayT:(pp,tot)=>"Plan: "+pp+" / person · "+tot+" group",
+  left:r=>r>=0?r+" MAD left":(-r)+" MAD over budget",copy:"Copy",copied:"Copied ✓",friend:"See it as a friend",
+  frT:"A plan from your friend 👋",frP:"Vote on each stop. In the real app, votes reach the whole group.",frClose:"Back to my plan",yes:"👍 In",no:"👎 Out",
+  wa:(n,b,stops,pp,tot)=>"🗓️ Night out in Casablanca\n👥 "+n+" people · budget "+b+" MAD\n\n"+stops+"\n\n💸 About "+pp+" MAD each ("+tot+" for the group)\nWho's in?",
+  foot1:"Prices in Moroccan dirhams (MAD), approximate.",foot2:"Sources: "}
+};
+
+/* ---------- Multi-city + business strings ---------- */
+Object.assign(T.ar,{sub:"المغرب",heroP:"اختار المدينة، قل لنا كم أنتم وكم معكم، ونعطيك أحسن الأماكن وشحال غادي يخلص كل واحد.",
+  places:n=>n+" أماكن",soon:"المدينة 7",soonS:"قريباً",
+  wa:(n,b,stops,pp,tot,city)=>"🗓️ خرجة ف"+city+"\n👥 "+n+" أشخاص · ميزانية "+b+" درهم\n\n"+stops+"\n\n💸 تقريباً "+pp+" درهم للشخص ("+tot+" للمجموعة)\nواش موافقين؟",
+  bizT:"عندك مقهى، مطعم ولا نشاط؟",bizP:"زيد بلاصتك فخرجة باش يلقاوك الناس اللي كيقلبو على خرجة بميزانيتهم، من المغاربة والسياح.",
+  tiers:[["إدراج مجاني",["صفحة لبلاصتك","الأسعار والصور","تبان فالبحث"]],["مميّز ⭐",["فوق فالنتائج","فالخطط المقترحة","إحصائيات الزيارات"],1],["عروض وحجوزات",["عروض للمجموعات","حجز مباشر","قريباً"]]],
+  bzName:"اسم البلاصة",bzCity:"المدينة",bzType:"النوع",bzPrice:"السعر للشخص (درهم)",bzContact:"إنستغرام ولا رقم الهاتف",bzSend:"بغيت نزيد بلاصتي",
+  bzErr:"عمّر اسم البلاصة وطريقة التواصل.",bzOk:n=>"✓ مزيان! فالنسخة الحقيقية غادي يتصيفط الطلب ديال «"+n+"» للفريق ونتواصلو معاك. (Demo: ما تصيفط والو)"});
+Object.assign(T.fr,{sub:"Maroc",heroP:"Choisissez la ville, dites-nous combien vous êtes et votre budget : on vous donne les meilleurs spots et combien chacun va payer.",
+  places:n=>n+" lieux",soon:"Ville 7",soonS:"Bientôt",
+  wa:(n,b,stops,pp,tot,city)=>"🗓️ Sortie à "+city+"\n👥 "+n+" pers. · budget "+b+" DH\n\n"+stops+"\n\n💸 Environ "+pp+" DH / pers. ("+tot+" pour le groupe)\nVous êtes chauds ?",
+  bizT:"Vous avez un café, un resto ou une activité ?",bizP:"Ajoutez votre lieu sur Kharja et soyez trouvé par ceux qui cherchent une sortie dans leur budget, Marocains comme touristes.",
+  tiers:[["Fiche gratuite",["Page de votre lieu","Prix et photos","Visible dans la recherche"]],["Mis en avant ⭐",["En haut des résultats","Dans les plans proposés","Statistiques de visites"],1],["Offres & réservations",["Offres pour groupes","Réservation directe","Bientôt"]]],
+  bzName:"Nom du lieu",bzCity:"Ville",bzType:"Type",bzPrice:"Prix par personne (DH)",bzContact:"Instagram ou téléphone",bzSend:"Ajouter mon lieu",
+  bzErr:"Indiquez le nom du lieu et un contact.",bzOk:n=>"✓ Parfait ! Dans la vraie app, la demande pour « "+n+" » est envoyée à l'équipe qui vous recontacte. (Démo : rien n'est envoyé)"});
+Object.assign(T.en,{sub:"Morocco",heroP:"Pick a city, tell us how many you are and your budget. We'll show the best spots and what each person pays.",
+  places:n=>n+" places",soon:"City 7",soonS:"Coming soon",
+  wa:(n,b,stops,pp,tot,city)=>"🗓️ Going out in "+city+"\n👥 "+n+" people · budget "+b+" MAD\n\n"+stops+"\n\n💸 About "+pp+" MAD each ("+tot+" for the group)\nWho's in?",
+  bizT:"Own a café, restaurant or activity?",bizP:"List your place on Kharja and get found by people planning a night out on a budget, locals and tourists alike.",
+  tiers:[["Free listing",["A page for your place","Prices and photos","Shows up in search"]],["Featured ⭐",["Top of results","Inside suggested plans","Visit statistics"],1],["Deals & bookings",["Group offers","Direct booking","Coming soon"]]],
+  bzName:"Place name",bzCity:"City",bzType:"Type",bzPrice:"Price per person (MAD)",bzContact:"Instagram or phone",bzSend:"List my place",
+  bzErr:"Add the place name and a contact.",bzOk:n=>"✓ Great! In the real app, the request for “"+n+"” goes to the team and we get back to you. (Demo: nothing is sent)"});
+
+/* ---------- Auth, trust, recap strings ---------- */
+Object.assign(T.ar,{signin:"دخول",ctaUp:"سجّل مجاناً",ctaIn:"عندك حساب؟ دخول",
+  trust:["الأسعار مع المصدر ديالها","تقدر تشوف بلا حساب","ما كنبيعوش المعلومات ديالك"],
+  tabUp:"حساب جديد",tabIn:"دخول",authUpT:"دير حساب فثانية",authInT:"مرحبا بيك من جديد",google:"كمل مع Google",apple:"كمل مع Apple",or:"ولا بالإيميل",
+  auName:"السمية",auEmail:"الإيميل",auPass:"كلمة السر",auUp:"دير الحساب",auIn:"دخول",auClose:"سدّ",
+  auMsg:"Demo: الحساب ما تصاوبش. فالنسخة الحقيقية غادي تدخل مباشرة.",auErr:"عمّر الإيميل وكلمة السر.",
+  auLegal:"بالتسجيل، كتوافق على شروط الاستخدام وسياسة الخصوصية.",
+  recT:"من بعد الخرجة 📸",recP:"شارك شنو درتو وشحال خلص كل واحد، فستوري واحدة.",story:"شارك فالستوري",storyMsg:"Demo: فالنسخة الحقيقية كتزيد التصاور ديالكم وكتشارك مباشرة فإنستغرام ولا واتساب.",
+  sTop:"خرجة ف",sPeople:"أشخاص",sEach:"كل واحد",sTotal:"المجموع",sEmpty:"زيد بلايص للخطة باش تشوف الستوري"});
+Object.assign(T.fr,{signin:"Connexion",ctaUp:"Inscription gratuite",ctaIn:"Déjà un compte ? Connexion",
+  trust:["Prix avec leur source","Sans compte pour explorer","Vos données ne sont pas vendues"],
+  tabUp:"Créer un compte",tabIn:"Connexion",authUpT:"Votre compte en une seconde",authInT:"Content de vous revoir",google:"Continuer avec Google",apple:"Continuer avec Apple",or:"ou par e-mail",
+  auName:"Prénom",auEmail:"E-mail",auPass:"Mot de passe",auUp:"Créer le compte",auIn:"Se connecter",auClose:"Fermer",
+  auMsg:"Démo : aucun compte créé. Dans la vraie app, vous êtes connecté directement.",auErr:"Indiquez l'e-mail et le mot de passe.",
+  auLegal:"En vous inscrivant, vous acceptez les conditions d'utilisation et la politique de confidentialité.",
+  recT:"Après la sortie 📸",recP:"Partagez ce que vous avez fait et ce que chacun a payé, en une story.",story:"Partager en story",storyMsg:"Démo : dans la vraie app, ajoutez vos photos et partagez directement sur Instagram ou WhatsApp.",
+  sTop:"Sortie à ",sPeople:"pers.",sEach:"chacun",sTotal:"total",sEmpty:"Ajoutez des lieux au plan pour voir la story"});
+Object.assign(T.en,{signin:"Sign in",ctaUp:"Sign up free",ctaIn:"Have an account? Sign in",
+  trust:["Prices with their source","Browse without an account","We don't sell your data"],
+  tabUp:"Sign up",tabIn:"Sign in",authUpT:"Create your account in a second",authInT:"Welcome back",google:"Continue with Google",apple:"Continue with Apple",or:"or with email",
+  auName:"First name",auEmail:"Email",auPass:"Password",auUp:"Create account",auIn:"Sign in",auClose:"Close",
+  auMsg:"Demo: no account was created. In the real app you'd be signed in right away.",auErr:"Add your email and password.",
+  auLegal:"By signing up you agree to the Terms of Use and Privacy Policy.",
+  recT:"After the night out 📸",recP:"Share what you did and what everyone paid, in one story.",story:"Share as a story",storyMsg:"Demo: in the real app you add your photos and share straight to Instagram or WhatsApp.",
+  sTop:"Out in ",sPeople:"people",sEach:"each",sTotal:"total",sEmpty:"Add places to the plan to see the story"});
+
+/* ---------- Spanish & Portuguese (World Cup 2030 co-hosts) ---------- */
+T.es={dir:"ltr",brand:"Kharja",sub:"Marruecos",demo:"Demo del concepto. Lugares reales; precios de fuentes publicadas o estimados, por verificar antes del lanzamiento.",
+ heroT:"¿Adónde salimos?",heroP:"Elige la ciudad, dinos cuántos sois y vuestro presupuesto: te mostramos los mejores sitios y cuánto paga cada uno.",
+ people:"¿Cuántas personas?",budget:"Presupuesto total del grupo",mad:"MAD",pp:"por persona",vibe:"Ambiente",type:"¿Qué buscáis?",
+ vibes:{any:"Todo",casual:"Informal",chic:"Chic",luxe:"Lujo"},cats:{all:"Todo",free:"Gratis",cafe:"Café",food:"Comida",roof:"Azotea",act:"Actividad"},
+ sugT:"Plan sugerido",sugNone:"Ningún plan de dos paradas cabe en este presupuesto. Súbelo un poco o cambia el ambiente.",sugUse:"Usar este plan",
+ resT:"Sitios para vosotros",resN:n=>n+" sitios",overSum:n=>"Por encima del presupuesto ("+n+")",
+ fit:{ok:"Dentro del presupuesto",near:"Quizás",over:"Muy caro"},perP:"/ pers.",total:"grupo",free:"Gratis",
+ add:"Añadir al plan",added:"✓ En el plan",src:"Precio de: ",est:"Precio estimado · por verificar",grp:m=>"Hasta "+m+" por sala",
+ tg:{sea:"Mar",sunset:"Atardecer",park:"Parque",view:"Vistas",culture:"Cultura",guided:"Guiado",street:"Comida callejera",traditional:"Marroquí",sweet:"Dulces",brunch:"Brunch",mall:"Centro comercial",family:"Familia",garden:"Jardín",live:"Música en vivo",italian:"Italiano",seafood:"Pescado",show:"Espectáculo",iconic:"Icónico",french:"Francés",cinema:"Cine",game:"Juego",fun:"Diversión"},
+ trayEmpty:"Añade sitios para compartir un plan",trayT:(pp,tot)=>"Plan: "+pp+" / pers. · "+tot+" grupo",
+ left:r=>r>=0?"Quedan "+r+" MAD":"Te pasas "+(-r)+" MAD",copy:"Copiar",copied:"Copiado ✓",friend:"Verlo como un amigo",
+ frT:"Un plan de tu amigo 👋",frP:"Vota cada parada. En la app real, los votos llegan a todo el grupo.",frClose:"Volver a mi plan",yes:"👍 Me apunto",no:"👎 Paso",
+ wa:(n,b,stops,pp,tot,city)=>"🗓️ Salida en "+city+"\n👥 "+n+" personas · presupuesto "+b+" MAD\n\n"+stops+"\n\n💸 Unos "+pp+" MAD cada uno ("+tot+" el grupo)\n¿Quién se apunta?",
+ foot1:"Precios en dírhams marroquíes (MAD), aproximados.",foot2:"Fuentes: ",places:n=>n+" sitios",soon:"Ciudad 7",soonS:"Próximamente",
+ bizT:"¿Tienes un café, restaurante o actividad?",bizP:"Añade tu sitio en Kharja y que te encuentren quienes buscan salir con su presupuesto, locales y turistas.",
+ tiers:[["Ficha gratis",["Página de tu sitio","Precios y fotos","Aparece en búsquedas"]],["Destacado ⭐",["Arriba en resultados","En los planes sugeridos","Estadísticas de visitas"],1],["Ofertas y reservas",["Ofertas para grupos","Reserva directa","Próximamente"]]],
+ bzName:"Nombre del sitio",bzCity:"Ciudad",bzType:"Tipo",bzPrice:"Precio por persona (MAD)",bzContact:"Instagram o teléfono",bzSend:"Añadir mi sitio",
+ bzErr:"Añade el nombre del sitio y un contacto.",bzOk:n=>"✓ ¡Genial! En la app real, la solicitud de «"+n+"» llega al equipo y te contactamos. (Demo: no se envía nada)",
+ signin:"Entrar",ctaUp:"Regístrate gratis",ctaIn:"¿Tienes cuenta? Entra",trust:["Precios con su fuente","Explora sin cuenta","No vendemos tus datos"],
+ tabUp:"Registro",tabIn:"Entrar",authUpT:"Tu cuenta en un segundo",authInT:"Bienvenido de nuevo",google:"Continuar con Google",apple:"Continuar con Apple",or:"o con email",
+ auName:"Nombre",auEmail:"Email",auPass:"Contraseña",auUp:"Crear cuenta",auIn:"Entrar",auClose:"Cerrar",
+ auMsg:"Demo: no se ha creado ninguna cuenta. En la app real entrarías al instante.",auErr:"Añade tu email y contraseña.",auLegal:"Al registrarte aceptas los Términos de uso y la Política de privacidad.",
+ recT:"Después de salir 📸",recP:"Comparte lo que hicisteis y lo que pagó cada uno, en una story.",story:"Compartir en story",storyMsg:"Demo: en la app real añades tus fotos y compartes directo en Instagram o WhatsApp.",
+ sTop:"Salida en ",sPeople:"pers.",sEach:"cada uno",sTotal:"total",sEmpty:"Añade sitios al plan para ver la story"};
+T.pt={dir:"ltr",brand:"Kharja",sub:"Marrocos",demo:"Demo do conceito. Locais reais; preços de fontes publicadas ou estimados, a confirmar antes do lançamento.",
+ heroT:"Onde vamos sair?",heroP:"Escolhe a cidade, diz-nos quantos são e o vosso orçamento: mostramos os melhores sítios e quanto paga cada um.",
+ people:"Quantas pessoas?",budget:"Orçamento total do grupo",mad:"MAD",pp:"por pessoa",vibe:"Ambiente",type:"O que procuram?",
+ vibes:{any:"Tudo",casual:"Descontraído",chic:"Chique",luxe:"Luxo"},cats:{all:"Tudo",free:"Grátis",cafe:"Café",food:"Comida",roof:"Rooftop",act:"Atividade"},
+ sugT:"Plano sugerido",sugNone:"Nenhum plano de duas paragens cabe neste orçamento. Aumenta um pouco ou muda o ambiente.",sugUse:"Usar este plano",
+ resT:"Sítios para vocês",resN:n=>n+" sítios",overSum:n=>"Acima do orçamento ("+n+")",
+ fit:{ok:"Dentro do orçamento",near:"Talvez",over:"Caro demais"},perP:"/ pessoa",total:"grupo",free:"Grátis",
+ add:"Adicionar ao plano",added:"✓ No plano",src:"Preço de: ",est:"Preço estimado · a confirmar",grp:m=>"Até "+m+" por sala",
+ tg:{sea:"Mar",sunset:"Pôr do sol",park:"Parque",view:"Vista",culture:"Cultura",guided:"Guiado",street:"Comida de rua",traditional:"Marroquino",sweet:"Doces",brunch:"Brunch",mall:"Centro comercial",family:"Família",garden:"Jardim",live:"Música ao vivo",italian:"Italiano",seafood:"Peixe",show:"Espetáculo",iconic:"Icónico",french:"Francês",cinema:"Cinema",game:"Jogo",fun:"Diversão"},
+ trayEmpty:"Adiciona sítios para partilhar um plano",trayT:(pp,tot)=>"Plano: "+pp+" / pessoa · "+tot+" grupo",
+ left:r=>r>=0?"Sobram "+r+" MAD":"Passa "+(-r)+" MAD do orçamento",copy:"Copiar",copied:"Copiado ✓",friend:"Ver como um amigo",
+ frT:"Um plano do teu amigo 👋",frP:"Vota em cada paragem. Na app real, os votos chegam a todo o grupo.",frClose:"Voltar ao meu plano",yes:"👍 Alinho",no:"👎 Passo",
+ wa:(n,b,stops,pp,tot,city)=>"🗓️ Saída em "+city+"\n👥 "+n+" pessoas · orçamento "+b+" MAD\n\n"+stops+"\n\n💸 Cerca de "+pp+" MAD cada ("+tot+" o grupo)\nQuem alinha?",
+ foot1:"Preços em dirhams marroquinos (MAD), aproximados.",foot2:"Fontes: ",places:n=>n+" sítios",soon:"Cidade 7",soonS:"Em breve",
+ bizT:"Tens um café, restaurante ou atividade?",bizP:"Adiciona o teu sítio no Kharja e sê encontrado por quem procura sair dentro do orçamento, locais e turistas.",
+ tiers:[["Ficha grátis",["Página do teu sítio","Preços e fotos","Aparece nas pesquisas"]],["Destaque ⭐",["No topo dos resultados","Nos planos sugeridos","Estatísticas de visitas"],1],["Ofertas e reservas",["Ofertas para grupos","Reserva direta","Em breve"]]],
+ bzName:"Nome do sítio",bzCity:"Cidade",bzType:"Tipo",bzPrice:"Preço por pessoa (MAD)",bzContact:"Instagram ou telefone",bzSend:"Adicionar o meu sítio",
+ bzErr:"Indica o nome do sítio e um contacto.",bzOk:n=>"✓ Ótimo! Na app real, o pedido de «"+n+"» chega à equipa e entramos em contacto. (Demo: nada é enviado)",
+ signin:"Entrar",ctaUp:"Regista-te grátis",ctaIn:"Já tens conta? Entra",trust:["Preços com a fonte","Explora sem conta","Não vendemos os teus dados"],
+ tabUp:"Registo",tabIn:"Entrar",authUpT:"A tua conta num segundo",authInT:"Bem-vindo de volta",google:"Continuar com Google",apple:"Continuar com Apple",or:"ou com email",
+ auName:"Nome",auEmail:"Email",auPass:"Palavra-passe",auUp:"Criar conta",auIn:"Entrar",auClose:"Fechar",
+ auMsg:"Demo: nenhuma conta foi criada. Na app real entrarias logo.",auErr:"Indica o email e a palavra-passe.",auLegal:"Ao registares-te aceitas os Termos de utilização e a Política de privacidade.",
+ recT:"Depois da saída 📸",recP:"Partilha o que fizeram e quanto pagou cada um, numa story.",story:"Partilhar na story",storyMsg:"Demo: na app real adicionas as tuas fotos e partilhas direto no Instagram ou WhatsApp.",
+ sTop:"Saída em ",sPeople:"pessoas",sEach:"cada",sTotal:"total",sEmpty:"Adiciona sítios ao plano para ver a story"};
+
+/* nature tags + "more cities" chip */
+Object.assign(T.ar.tg,{nature:"طبيعة",lake:"بحيرة",forest:"غابة"});Object.assign(T.fr.tg,{nature:"Nature",lake:"Lac",forest:"Forêt"});
+Object.assign(T.en.tg,{nature:"Nature",lake:"Lake",forest:"Forest"});Object.assign(T.es.tg,{nature:"Naturaleza",lake:"Lago",forest:"Bosque"});
+Object.assign(T.pt.tg,{nature:"Natureza",lake:"Lago",forest:"Floresta"});
+Object.assign(T.ar,{soon:"مدن أخرى",soonS:"قريباً"});Object.assign(T.fr,{soon:"Autres villes",soonS:"Bientôt"});Object.assign(T.en,{soon:"More cities",soonS:"Coming soon"});
+Object.assign(T.es,{soon:"Más ciudades",soonS:"Próximamente"});Object.assign(T.pt,{soon:"Mais cidades",soonS:"Em breve"});
+
+/* ---------- State ---------- */
+const S = {lang:"ar",city:"casa",people:4,budget:600,vibe:"any",cat:"all",plan:[],friend:false,votes:{}};
+const cityName=k=>{const c=CITIES.find(x=>x[0]===k);return S.lang==="ar"?c[2]:c[1]};
+try{const l=localStorage.getItem("kharja-lang");if(l&&T[l])S.lang=l}catch(e){}
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString({ar:"ar-MA",es:"es-ES",pt:"pt-PT"}[S.lang]||"fr-MA");
+const rng=(a,b)=>a===b?fmt(a):fmt(a)+"–"+fmt(b);
+const ppBudget=()=>S.people>0?S.budget/S.people:0;
+
+function fitOf(p){const B=ppBudget(); if(p.p[1]<=B)return"ok"; if(p.p[0]<=B)return"near"; return"over"}
+function vibeOk(p){if(S.vibe==="any")return true; if(S.vibe==="luxe")return p.v==="luxe"||p.c==="roof"; if(S.vibe==="chic")return p.v!=="casual"||p.c==="free"; return p.v==="casual"}
+function catOk(p){return S.cat==="all"||p.c===S.cat}
+
+function suggestion(){
+  const B=ppBudget(), pool=P.filter(p=>p.y===S.city&&vibeOk(p));
+  const firsts=pool.filter(p=>p.c==="act"||p.c==="free"), seconds=pool.filter(p=>["food","cafe","roof"].includes(p.c));
+  let best=null;
+  for(const a of firsts)for(const b of seconds){
+    if(a.max&&S.people>a.max*2)continue;
+    const hi=a.p[1]+b.p[1]; if(hi>B)continue;
+    const score=hi+(a.c==="act"?15:0)+(b.c==="roof"&&S.vibe!=="casual"?20:0);
+    if(!best||score>best.score)best={a,b,score,lo:a.p[0]+b.p[0],hi};
+  }
+  return best;
+}
+
+/* ---------- Render ---------- */
+function chipRow(el,items,cur,on){el.innerHTML="";for(const[k,label]of items){const b=document.createElement("button");b.className="chip";b.textContent=label;b.setAttribute("aria-pressed",String(k===cur));b.onclick=()=>on(k);el.appendChild(b)}}
+
+function card(p,L){
+  const f=fitOf(p), inPlan=S.plan.includes(p.id);
+  const d=document.createElement("article");d.className="card";
+  const price=p.p[1]===0?L.free:rng(p.p[0],p.p[1]);
+  const tot=p.p[1]===0?"":rng(p.p[0]*S.people,p.p[1]*S.people)+" "+L.total;
+  const src=p.q==="src"&&p.s?`<span class="src">${L.src}<a href="${SRC[p.s].u}" target="_blank" rel="noopener">${SRC[p.s].t}</a></span>`:`<span class="src">${L.est}</span>`;
+  const grp=p.max?`<span class="tag">${L.grp(p.max)}</span>`:"";
+  d.innerHTML=`<div class="name"></div>
+   <div class="price num"><b>${price}</b><small>${p.p[1]===0?"":L.perP}</small><br><small>${tot}</small></div>
+   <div class="meta">${L.cats[p.c]} · ${p.a}</div>
+   <div class="tags"><span class="fit ${f}">${L.fit[f]}</span>${p.tg.map(t=>`<span class="tag">${L.tg[t]||t}</span>`).join("")}${grp}</div>
+   <div class="tags">${src}</div>
+   <button class="add" aria-pressed="${inPlan}">${inPlan?L.added:L.add}</button>`;
+  d.querySelector(".name").textContent=p.n;
+  d.querySelector(".add").onclick=()=>{S.plan=inPlan?S.plan.filter(x=>x!==p.id):[...S.plan,p.id];render()};
+  return d;
+}
+
+function render(){
+  const L=T[S.lang];
+  document.documentElement.lang=S.lang; document.documentElement.dir=L.dir;
+  ["ar","fr","en","es","pt"].forEach(l=>$("l-"+l).setAttribute("aria-pressed",String(l===S.lang)));
+  $("tagTr").textContent={ar:"قسّم · خطّط · اخرج · معاً",fr:"Partagez · Planifiez · Sortez · Ensemble",en:"",es:"Divide · Planea · Sal · Juntos",pt:"Divide · Planeia · Sai · Juntos"}[S.lang];
+  $("brandName").textContent=L.brand; $("brandSub").textContent=L.sub; $("demoNote").textContent=L.demo;
+  $("heroT").textContent=L.heroT; $("heroP").textContent=L.heroP;
+  $("lblPeople").textContent=L.people; $("lblBudget").textContent=L.budget; $("mad").textContent=L.mad;
+  $("lblVibe").textContent=L.vibe; $("lblType").textContent=L.type;
+  $("people").textContent=fmt(S.people); $("peopleIcons").textContent="🧍".repeat(Math.min(S.people,10));
+  $("ppVal").textContent=fmt(ppBudget()); $("ppLbl").textContent=L.mad+" "+L.pp;
+  // cities
+  const cc=$("cityChips");cc.innerHTML="";
+  CITIES.forEach(([k])=>{const b=document.createElement("button");b.className="city";b.setAttribute("aria-pressed",String(k===S.city));
+    b.innerHTML=`<b></b><small class="num">${L.places(fmt(P.filter(p=>p.y===k).length))}</small>`;b.querySelector("b").textContent=cityName(k);
+    b.onclick=()=>{if(S.city!==k){S.city=k;S.plan=[];S.votes={};S.friend=false;render()}};cc.appendChild(b)});
+  const soon=document.createElement("button");soon.className="city soon";soon.disabled=true;soon.innerHTML=`<b>${L.soon}</b><small>${L.soonS}</small>`;cc.appendChild(soon);
+
+  // business section
+  $("bizT").textContent=L.bizT;$("bizP").textContent=L.bizP;
+  $("tiers").innerHTML=L.tiers.map(([n,items,feat])=>`<div class="tier${feat?" feat":""}"><b>${n}</b><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div>`).join("");
+  $("bzLName").textContent=L.bzName;$("bzLCity").textContent=L.bzCity;$("bzLType").textContent=L.bzType;$("bzLPrice").textContent=L.bzPrice;$("bzLContact").textContent=L.bzContact;$("bzSend").textContent=L.bzSend;
+  const bc=$("bz-city"),bcv=bc.value;bc.innerHTML=CITIES.map(([k])=>`<option value="${k}">${cityName(k)}</option>`).join("");bc.value=bcv||S.city;
+  const bt=$("bz-type"),btv=bt.value;bt.innerHTML=Object.entries(L.cats).filter(([k])=>k!=="all"&&k!=="free").map(([k,v])=>`<option value="${k}">${v}</option>`).join("");if(btv)bt.value=btv;
+
+  chipRow($("budgetChips"),[200,400,600,1000,2000].map(v=>[v,fmt(v)]),S.budget,v=>{S.budget=v;$("budget").value=v;render()});
+  chipRow($("vibeChips"),Object.entries(L.vibes),S.vibe,v=>{S.vibe=v;render()});
+  chipRow($("typeChips"),Object.entries(L.cats),S.cat,v=>{S.cat=v;render()});
+
+  // suggestion
+  const sg=suggestion(), box=$("suggest");
+  if(sg){box.className="suggest";box.innerHTML=`<h3>${L.sugT}</h3><ol><li></li><li></li></ol>
+    <div class="tot num"><span>${rng(sg.lo,sg.hi)} ${L.mad} ${L.pp}</span><span>${rng(sg.lo*S.people,sg.hi*S.people)} ${L.total}</span></div>
+    <button id="useSg">${L.sugUse}</button>`;
+    const li=box.querySelectorAll("li");li[0].textContent=sg.a.n+" · "+sg.a.a;li[1].textContent=sg.b.n+" · "+sg.b.a;
+    $("useSg").onclick=()=>{S.plan=[sg.a.id,sg.b.id];render()};
+  }else{box.className="suggest empty";box.innerHTML=`<h3>${L.sugT}</h3><p style="margin:0">${L.sugNone}</p>`}
+
+  // lists
+  const shown=P.filter(p=>p.y===S.city&&vibeOk(p)&&catOk(p));
+  const okL=shown.filter(p=>fitOf(p)!=="over").sort((a,b)=>(fitOf(a)==="ok"?0:1)-(fitOf(b)==="ok"?0:1)||b.p[1]-a.p[1]);
+  const overL=shown.filter(p=>fitOf(p)==="over").sort((a,b)=>a.p[0]-b.p[0]);
+  $("resT").textContent=L.resT; $("resN").textContent=L.resN(fmt(okL.length));
+  const list=$("list");list.innerHTML="";okL.forEach(p=>list.appendChild(card(p,L)));
+  const ol=$("overList");ol.innerHTML="";overL.forEach(p=>ol.appendChild(card(p,L)));
+  $("overWrap").hidden=!overL.length; $("overSum").textContent=L.overSum(fmt(overL.length));
+
+  // tray
+  const stops=S.plan.map(id=>P.find(p=>p.id===id));
+  const lo=stops.reduce((s,p)=>s+p.p[0],0), hi=stops.reduce((s,p)=>s+p.p[1],0);
+  const has=stops.length>0;
+  $("trayT").textContent=has?L.trayT(rng(lo,hi)+" "+L.mad,rng(lo*S.people,hi*S.people)):L.trayEmpty;
+  const left=S.budget-hi*S.people; const lf=$("trayLeft");
+  lf.textContent=has?L.left(fmt(left)):""; lf.className="left num "+(left>=0?"ok":"over");
+  $("trayStops").textContent=stops.map(p=>p.n).join(" → ");
+  const msg=L.wa(fmt(S.people),fmt(S.budget),stops.map((p,i)=>(i+1)+". "+p.n+" ("+p.a+") · "+(p.p[1]===0?L.free:rng(p.p[0],p.p[1])+" "+L.mad)).join("\n"),rng(lo,hi),rng(lo*S.people,hi*S.people)+" "+L.mad,cityName(S.city));
+  const wa=$("waBtn"); wa.href=has?"https://wa.me/?text="+encodeURIComponent(msg):"#"; wa.setAttribute("aria-disabled",String(!has)); wa.dataset.msg=msg;
+  $("copyBtn").textContent=L.copy; $("copyBtn").disabled=!has;
+  $("friendBtn").textContent=L.friend; $("friendBtn").disabled=!has;
+
+  // friend view
+  const fv=$("friendView");
+  if(S.friend&&has){fv.hidden=false;fv.className="friend";
+    fv.innerHTML=`<h3>${L.frT}</h3><p class="note" style="margin:0">${L.frP}</p>`+
+      stops.map(p=>`<div class="vote"><span><b></b><br><small class="num">${p.p[1]===0?L.free:rng(p.p[0],p.p[1])+" "+L.mad+" "+L.perP}</small></span>
+        <span class="vb"><button data-id="${p.id}" data-v="y" aria-pressed="${S.votes[p.id]==="y"}">${L.yes}</button><button data-id="${p.id}" data-v="n" aria-pressed="${S.votes[p.id]==="n"}">${L.no}</button></span></div>`).join("")+
+      `<button class="btn ghost" id="frClose" style="align-self:flex-start">${L.frClose}</button>`;
+    fv.querySelectorAll(".vote b").forEach((b,i)=>b.textContent=stops[i].n);
+    fv.querySelectorAll(".vb button").forEach(b=>b.onclick=()=>{S.votes[b.dataset.id]=b.dataset.v;render()});
+    $("frClose").onclick=()=>{S.friend=false;render()};
+  }else{fv.hidden=true}
+
+  // auth + trust
+  $("signinBtn").textContent=L.signin;$("ctaSignup").textContent=L.ctaUp;$("ctaSignin").textContent=L.ctaIn;
+  $("trust").innerHTML="";L.trust.forEach(t=>{const li=document.createElement("li");li.textContent=t;$("trust").appendChild(li)});
+  const up=S.auth==="up";
+  $("tab-up").textContent=L.tabUp;$("tab-in").textContent=L.tabIn;$("tab-up").setAttribute("aria-selected",String(up));$("tab-in").setAttribute("aria-selected",String(!up));
+  $("authT").textContent=up?L.authUpT:L.authInT;$("ssoGt").textContent=L.google;$("ssoAt").textContent=L.apple;$("orT").textContent=L.or;
+  $("nameFld").hidden=!up;$("auLName").textContent=L.auName;$("auLEmail").textContent=L.auEmail;$("auLPass").textContent=L.auPass;
+  $("auSend").textContent=up?L.auUp:L.auIn;$("authClose").textContent=L.auClose;$("auLegal").textContent=up?L.auLegal:"";
+
+  // recap story
+  $("recT").textContent=L.recT;$("recP").textContent=L.recP;$("storyBtn").textContent=L.story;
+  const st=$("story");
+  if(has){st.innerHTML=`<div><div class="s-top"></div><h4></h4></div><ol></ol>
+    <div class="s-num num"><span>${L.sEach}<b>${fmt(Math.round((lo+hi)/2))}</b>${L.mad}</span><span>${L.sTotal}<b>${fmt(Math.round((lo+hi)/2*S.people))}</b>${fmt(S.people)} ${L.sPeople}</span></div>
+    <div class="s-brand">Kharja · S·P·O·T</div>`;
+    st.querySelector(".s-top").textContent=L.sTop+cityName(S.city);st.querySelector("h4").textContent="Yalla, Kharja!";
+    const o=st.querySelector("ol");stops.forEach(p=>{const li=document.createElement("li");li.textContent=p.n;o.appendChild(li)});
+  }else{st.innerHTML=`<p style="margin:auto;text-align:center">${L.sEmpty}</p>`}
+  $("storyBtn").disabled=!has;
+
+  // footer
+  $("foot1").textContent=L.foot1;
+  const f2=$("foot2");f2.textContent=L.foot2;
+  Object.values(SRC).forEach((s,i)=>{const a=document.createElement("a");a.href=s.u;a.target="_blank";a.rel="noopener";a.textContent=s.t;f2.appendChild(a);if(i<Object.keys(SRC).length-1)f2.appendChild(document.createTextNode(" · "))});
+}
+
+/* ---------- Events ---------- */
+$("minus").onclick=()=>{S.people=Math.max(1,S.people-1);render()};
+$("plus").onclick=()=>{S.people=Math.min(12,S.people+1);render()};
+$("budget").addEventListener("input",e=>{const v=parseInt(e.target.value,10);S.budget=isNaN(v)||v<0?0:v;render()});
+document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;try{localStorage.setItem("kharja-lang",S.lang)}catch(e){};render()});
+$("copyBtn").onclick=async()=>{const L=T[S.lang],m=$("waBtn").dataset.msg;try{await navigator.clipboard.writeText(m);$("copyBtn").textContent=L.copied;setTimeout(()=>$("copyBtn").textContent=L.copy,1500)}catch(e){const ta=document.createElement("textarea");ta.value=m;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("copyBtn").textContent=L.copied}catch(_){};ta.remove()}};
+S.auth="up";
+const openAuth=m=>{S.auth=m;$("auMsg").textContent="";render();$("authBg").hidden=false;$("ssoG").focus()};
+const closeAuth=()=>{$("authBg").hidden=true};
+$("signinBtn").onclick=()=>openAuth("in");$("ctaSignin").onclick=()=>openAuth("in");$("ctaSignup").onclick=()=>openAuth("up");
+$("tab-up").onclick=()=>{S.auth="up";render()};$("tab-in").onclick=()=>{S.auth="in";render()};
+$("authClose").onclick=closeAuth;$("authBg").addEventListener("click",e=>{if(e.target===$("authBg"))closeAuth()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAuth()});
+["ssoG","ssoA"].forEach(id=>$(id).onclick=()=>{const m=$("auMsg");m.textContent=T[S.lang].auMsg;m.style.color="var(--muted)"});
+$("authForm").addEventListener("submit",e=>{e.preventDefault();const L=T[S.lang],m=$("auMsg");
+  if(!$("au-email").value.trim()||!$("au-pass").value){m.textContent=L.auErr;m.style.color="var(--over)";return}
+  m.textContent=L.auMsg;m.style.color="var(--muted)"});
+$("storyBtn").onclick=()=>{$("storyMsg").textContent=T[S.lang].storyMsg};
+$("bizForm").addEventListener("submit",e=>{e.preventDefault();const L=T[S.lang],n=$("bz-name").value.trim(),c=$("bz-contact").value.trim(),m=$("bzMsg");
+  if(!n||!c){m.textContent=L.bzErr;m.style.color="var(--over)";return}
+  m.textContent=L.bzOk(n);m.style.color="var(--ok)"});
+$("friendBtn").onclick=()=>{S.friend=true;render();$("friendView").scrollIntoView({behavior:"smooth",block:"start"})};
+
+/* start with an example plan so the first view shows the full flow */
+S.plan=[24,6];
+render();
+</script>
+
+</body>
+</html>

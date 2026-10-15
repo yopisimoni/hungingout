@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// Kharja – Firestore security rules (draft, applied once Firebase is connected)
+// Principle: everyone can read public places; people only change their own data.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Public catalogue of places. Edited by the team only (from the console / admin tools).
+    match /places/{placeId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Private profile of each user.
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Plans are shared by link: anyone with the link can open one plan,
+    // but nobody can list all plans. Only the owner can change or delete it.
+    match /plans/{planId} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if request.auth != null
+                    && request.resource.data.owner == request.auth.uid
+                    && request.resource.data.stops is list
+                    && request.resource.data.stops.size() <= 6;
+      allow update, delete: if request.auth != null && resource.data.owner == request.auth.uid;
+
+      // One vote per signed-in person per plan.
+      match /votes/{uid} {
+        allow get, list: if true;
+        allow write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+
+    // "List my place" requests from venue owners: write-only from the app.
+    match /listingRequests/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'city', 'type', 'price', 'contact', 'lang', 'createdAt'])
+                    && request.resource.data.name is string && request.resource.data.name.size() <= 120
+                    && request.resource.data.contact is string && request.resource.data.contact.size() <= 120;
+      allow read, update, delete: if false;
+    }
+  }
+}
