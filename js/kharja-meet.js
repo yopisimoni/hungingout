@@ -60,7 +60,7 @@ const M = {
 };
 const m = k => (M[S.lang] || M.en)[k];
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const placeOf = id => P.find(p => p.id === Number(id));
+const placeOf = id => P.find(p => String(p.id) === String(id));
 const nameOf = u => u.displayName || (u.email || "").split("@")[0] || "?";
 const toast = t => { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => e.hidden = true, 2400); };
 const needUser = fn => S.user ? fn() : (openAuth("up"));

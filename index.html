@@ -262,6 +262,29 @@ footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:
 .card{transition:box-shadow .2s,transform .2s}
 @media (hover:hover){.card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgb(0 0 0 / .08)}}
 @media (prefers-reduced-motion:reduce){.k-in,.k-bump{animation:none!important}.chip,.city,.btn,.card{transition:none}}
+.src.owner{color:var(--ok);font-weight:600}
+.vbadge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--ok)}
+.pro-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.vcard{background:var(--surface);box-shadow:var(--shadow);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px}
+.vcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.vcard h3{margin:0;font-family:var(--display);font-size:22px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpis div{background:var(--sunk);border-radius:12px;padding:8px;text-align:center}
+.kpis b{display:block;font-size:20px;font-family:var(--display)}
+.kpis span{font-size:11.5px;color:var(--muted)}
+@media (max-width:380px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.pill.no{background:var(--over);color:#fff}
+.lines{display:flex;flex-direction:column;gap:6px}
+.lines .ln{display:grid;grid-template-columns:1fr 90px auto;gap:6px}
+.lines .ln.off{grid-template-columns:1fr 1.4fr auto}
+.lines input,.vform input,.vform select,.vform textarea{padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface);width:100%;min-width:0}
+.vform{display:flex;flex-direction:column;gap:10px}
+.vform .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.vform .g2{grid-template-columns:1fr}}
+.menu-list{display:flex;flex-direction:column}
+.menu-list div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:7px 0}
+.offer{background:var(--sun);color:var(--sun-ink);border-radius:12px;padding:10px 12px}
+.offer b{display:block}
 .vote .vb{flex-wrap:wrap;justify-content:flex-end}
 .vote .vb button{font-weight:600;transition:transform .12s}
 .vote .vb button:active{transform:scale(.92)}
@@ -448,6 +471,7 @@ body{font-size:15.5px;letter-spacing:.005em}
 
   <section class="biz" id="biz">
     <div class="biz-h"><h3 id="bizT"></h3><p id="bizP"></p></div>
+    <button class="btn cta" id="proOpen" type="button"></button>
     <div class="tiers" id="tiers"></div>
     <form id="bizForm" novalidate>
       <div class="f2">
@@ -465,6 +489,7 @@ body{font-size:15.5px;letter-spacing:.005em}
 
   <section id="vFeed" class="view" hidden></section>
   <section id="vMeet" class="view" hidden></section>
+  <section id="vPro" class="view" hidden></section>
   <section id="vMe" class="view" hidden></section>
 
   <footer>
@@ -754,6 +779,9 @@ Object.assign(T.pt.tg,{nature:"Natureza",lake:"Lago",forest:"Floresta"});
 Object.assign(T.ar,{soon:"مدن أخرى",soonS:"قريباً"});Object.assign(T.fr,{soon:"Autres villes",soonS:"Bientôt"});Object.assign(T.en,{soon:"More cities",soonS:"Coming soon"});
 Object.assign(T.es,{soon:"Más ciudades",soonS:"Próximamente"});Object.assign(T.pt,{soon:"Mais cidades",soonS:"Em breve"});
 
+/* ---------- Owner-verified label ---------- */
+const VERIF={ar:"السعر من مول البلاصة",fr:"Prix confirmé par le lieu",en:"Price confirmed by the venue",es:"Precio confirmado por el local",pt:"Preço confirmado pelo local"};
+
 /* ---------- Navigation strings ---------- */
 const NAV={
  ar:{explore:"🔎 استكشف",feed:"📣 الفيد",meet:"🫂 خرجات مفتوحة",me:"👤 فضائي",blog:"📝 المدونة",near:"📍 قريب مني",nearS:"حسب موقعك",more:n=>"شوف "+n+" بلايص أخرى"},
@@ -829,7 +857,7 @@ function card(p,L){
   const d=document.createElement("article");d.className="card";
   const price=p.p[1]===0?L.free:rng(p.p[0],p.p[1]);
   const tot=p.p[1]===0?"":rng(p.p[0]*S.people,p.p[1]*S.people)+" "+L.total;
-  const src=p.q==="src"&&p.s?`<span class="src">${L.src}<a href="${SRC[p.s].u}" target="_blank" rel="noopener">${SRC[p.s].t}</a></span>`:`<span class="src">${L.est}</span>`;
+  const src=p.q==="owner"?`<span class="src owner">✓ ${(VERIF[S.lang]||VERIF.en)}</span>`:p.q==="src"&&p.s?`<span class="src">${L.src}<a href="${SRC[p.s].u}" target="_blank" rel="noopener">${SRC[p.s].t}</a></span>`:`<span class="src">${L.est}</span>`;
   const grp=p.max?`<span class="tag">${L.grp(p.max)}</span>`:"";
   d.innerHTML=`<div class="name"></div>
    <div class="price num"><b>${price}</b><small>${p.p[1]===0?"":L.perP}</small><br><small>${tot}</small></div>
@@ -840,6 +868,7 @@ function card(p,L){
   d.querySelector(".name").textContent=p.n;
   d.querySelector(".add").onclick=()=>{S.plan=inPlan?S.plan.filter(x=>x!==p.id):[...S.plan,p.id];render()};
   if(window.SX)SX.decorate(d,p);
+  if(window.VX)VX.decorate(d,p);
   return d;
 }
 
@@ -894,7 +923,7 @@ function render(){
   $("overWrap").hidden=!overL.length; $("overSum").textContent=L.overSum(fmt(overL.length));
 
   // tray
-  const stops=S.plan.map(id=>P.find(p=>p.id===id));
+  const stops=S.plan.map(id=>P.find(p=>String(p.id)===String(id))).filter(Boolean);
   const lo=stops.reduce((s,p)=>s+p.p[0],0), hi=stops.reduce((s,p)=>s+p.p[1],0);
   const has=stops.length>0;
   $("trayT").textContent=has?L.trayT(rng(lo,hi)+" "+L.mad,rng(lo*S.people,hi*S.people)):L.trayEmpty;
@@ -949,9 +978,10 @@ function render(){
   // views + nav
   const N=NAV[S.lang]||NAV.en;S.view=S.view||"explore";
   ["explore","meet","feed","me"].forEach(v=>{const b=$("nv-"+v);b.textContent=N[v];b.setAttribute("aria-current",String(S.view===v))});$("nv-blog").textContent=N.blog;
-  $("vExplore").hidden=S.view!=="explore";$("vFeed").hidden=S.view!=="feed";$("vMe").hidden=S.view!=="me";$("vMeet").hidden=S.view!=="meet";$("tray").hidden=S.view!=="explore";
+  $("vExplore").hidden=S.view!=="explore";$("vFeed").hidden=S.view!=="feed";$("vMe").hidden=S.view!=="me";$("vMeet").hidden=S.view!=="meet";$("vPro").hidden=S.view!=="pro";$("tray").hidden=S.view!=="explore";
   if(window.SX)SX.render();
   if(window.MX&&S.view==="meet")MX.render();
+  if(window.VX)VX.render();
 
   // footer
   $("foot1").textContent=L.foot1;
@@ -998,5 +1028,6 @@ new IntersectionObserver(function(e){t.classList.toggle("dock-away",e[0].interse
 <script type="module" src="js/kharja-firebase.js"></script>
 <script type="module" src="js/kharja-social.js"></script>
 <script type="module" src="js/kharja-meet.js"></script>
+<script type="module" src="js/kharja-pro.js"></script>
 </body>
 </html>

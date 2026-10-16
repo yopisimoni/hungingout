@@ -71,7 +71,7 @@ const CITY_XY = { casa: [33.5731, -7.5898], rabat: [34.0209, -6.8416], rak: [31.
 
 /* ---------- Small DOM helpers (user text always goes through textContent) ---------- */
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const placeOf = id => P.find(p => p.id === Number(id));
+const placeOf = id => P.find(p => String(p.id) === String(id));
 const nameOf = u => u.displayName || (u.email || "").split("@")[0] || "?";
 const initial = n => (n || "?").trim().charAt(0).toUpperCase();
 function toast(text) {
@@ -364,6 +364,8 @@ function renderMe() {
     row.append(t, a); v.appendChild(row);
   });
 
+  const pro = el("button", "btn ghost", "🏪 " + (window.VX ? ({ ar: "عندك بلاصة؟ فضاء المهنيين", fr: "Vous avez un lieu ? Espace pro", en: "Own a place? Pro space", es: "¿Tienes un local? Espacio pro", pt: "Tens um local? Espaço pro" }[S.lang] || "Pro space") : ""));
+  pro.onclick = () => { S.view = "pro"; render(); scrollTo({ top: 0 }); };
   v.appendChild(el("h3", "lbl", "💬 " + x("myCm")));
   if (myCms && !myCms.length) v.appendChild(el("p", "empty", x("noCm")));
   (myCms || []).forEach(c => {
@@ -371,6 +373,7 @@ function renderMe() {
     top.append(el("b", "", (p ? p.n : "?") + "  " + "★".repeat(c.stars || 0)), el("small", "", ago(c.at)));
     row.append(top, el("div", "txt", c.text)); v.appendChild(row);
   });
+  v.appendChild(pro);
 }
 
 function renderViews() {

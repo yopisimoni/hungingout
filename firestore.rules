@@ -4,6 +4,60 @@ service cloud.firestore {
 
     function signedIn() { return request.auth != null; }
     function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+
+    // Admins are added by hand in the Firebase console (document id = the admin's user UID).
+    match /admins/{uid} {
+      allow read: if isMe(uid);
+      allow write: if false;
+    }
+
+    // Venues listed by their owners. New venues start 'pending'; only an admin changes the status.
+    function validVenue(d) {
+      return d.keys().hasOnly(['owner', 'name', 'city', 'cat', 'area', 'vibe', 'priceMin', 'priceMax', 'desc', 'hours', 'phone', 'insta', 'maps', 'menu', 'offers', 'status', 'at', 'updated'])
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 80
+        && d.city in ['casa', 'rabat', 'rak', 'tng', 'aga', 'fes', 'khn']
+        && d.cat in ['cafe', 'food', 'roof', 'act']
+        && d.vibe in ['casual', 'chic', 'luxe']
+        && d.priceMin is int && d.priceMax is int && d.priceMin >= 0 && d.priceMax >= d.priceMin && d.priceMax <= 5000
+        && d.area is string && d.area.size() <= 60
+        && d.desc is string && d.desc.size() <= 600
+        && d.hours is string && d.hours.size() <= 120
+        && d.phone is string && d.phone.size() <= 30
+        && d.insta is string && d.insta.size() <= 60
+        && d.maps is string && d.maps.size() <= 300
+        && d.menu is list && d.menu.size() <= 40
+        && d.offers is list && d.offers.size() <= 6;
+    }
+    match /venues/{vid} {
+      allow read: if resource.data.status == 'live'
+                  || (signedIn() && resource.data.owner == request.auth.uid)
+                  || isAdmin();
+      allow create: if signedIn()
+                    && request.resource.data.owner == request.auth.uid
+                    && request.resource.data.status == 'pending'
+                    && validVenue(request.resource.data);
+      allow update: if (signedIn() && resource.data.owner == request.auth.uid
+                        && request.resource.data.owner == resource.data.owner
+                        && request.resource.data.status == resource.data.status
+                        && validVenue(request.resource.data))
+                    || (isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+                        && request.resource.data.status in ['pending', 'live', 'rejected']);
+      allow delete: if signedIn() && resource.data.owner == request.auth.uid;
+    }
+
+    // Public counters for venue owners: each write can only add 1 to one counter.
+    match /venueStats/{vid} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['views', 'planAdds'])
+                    && request.resource.data.get('views', 0) <= 1 && request.resource.data.get('planAdds', 0) <= 1;
+      allow update: if request.resource.data.keys().hasOnly(['views', 'planAdds'])
+                    && ((request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+                         && request.resource.data.views == resource.data.get('views', 0) + 1)
+                     || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['planAdds'])
+                         && request.resource.data.planAdds == resource.data.get('planAdds', 0) + 1));
+      allow delete: if false;
+    }
 
     // Places catalogue (read-only from the app) + public likes and reviews per place.
     match /places/{placeId} {
@@ -138,7 +192,8 @@ service cloud.firestore {
       allow create: if request.resource.data.keys().hasOnly(['name', 'city', 'type', 'price', 'contact', 'lang', 'createdAt'])
                     && request.resource.data.name is string && request.resource.data.name.size() <= 120
                     && request.resource.data.contact is string && request.resource.data.contact.size() <= 120;
-      allow read, update, delete: if false;
+      allow read: if isAdmin();
+      allow update, delete: if false;
     }
   }
 }
