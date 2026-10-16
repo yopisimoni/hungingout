@@ -10,7 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAp4ATE2QpTWPf54sOHBNiBcnbS2iNziDg",
+  apiKey: "AIzaSyAp4ATE2QpTWPf54sOHBNiBcnbS2iNziDg", // gitleaks:allow (public Firebase web key, restricted by referrer)
   authDomain: "hanging-out-dbfd0.firebaseapp.com",
   projectId: "hanging-out-dbfd0",
   storageBucket: "hanging-out-dbfd0.firebasestorage.app",
