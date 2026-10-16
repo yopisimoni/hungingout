@@ -8,12 +8,12 @@
 <meta property="og:title" content="Kharja · Split. Plan. Out. Together.">
 <meta property="og:description" content="Where to go out in Morocco, and what each person pays.">
 <meta property="og:image" content="img/friends-table.jpg">
-<meta name="theme-color" content="#0B7A80">
+<meta name="theme-color" content="#12163A">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Readex+Pro:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Readex+Pro:wght@300;400;500;600;700&display=swap">
 <style>
 /* Layout: one mobile column. Controls on top, ranked places, sticky plan tray at the bottom. Casablanca = Atlantic teal + Art Deco sun. */
 :root{
@@ -288,6 +288,91 @@ footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:
 @media (prefers-reduced-motion:reduce){.boom .bcard,.boom .bcard .e{animation:none}}
 footer a{color:inherit}
 @media (prefers-reduced-motion:no-preference){.card,.chip,.add{transition:background .15s,color .15s,border-color .15s}}
+
+/* ===== Premium layer: "Majorelle after dark" =====
+   Layout: one column; full-bleed photo hero with the headline on it; floating glass plan dock.
+   Majorelle blue for action, lantern brass for reward, deep indigo ink instead of black.
+   Zellige star pattern appears only on the hero and the suggested plan. */
+:root{
+  --bg:#F3F4F8; --surface:#FFFFFF; --sunk:#E8EAF2; --fg:#12163A; --muted:#5B6283; --line:#DADDEA;
+  --accent:#2F4BD8; --accent-ink:#FFFFFF; --sun:#C8912E; --sun-ink:#1E1500;
+  --ok:#1F8A5B; --warn:#B7751A; --over:#C0394B;
+  --display:"Reem Kufi","Readex Pro",system-ui,sans-serif;
+  --r:18px;
+  --shadow:0 1px 0 var(--line),0 14px 30px -18px rgb(18 22 58 / .35);
+  --zellige:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg fill='none' stroke='white' stroke-opacity='.13' stroke-width='1'%3E%3Crect x='13' y='13' width='18' height='18'/%3E%3Crect x='13' y='13' width='18' height='18' transform='rotate(45 22 22)'/%3E%3C/g%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B0E24; --surface:#141938; --sunk:#10143A; --fg:#EEF0FA; --muted:#9AA1C7; --line:#262C55;
+  --accent:#6F86FF; --accent-ink:#0B0E24; --sun:#E2B24F; --sun-ink:#1E1500;
+  --ok:#4FCB8E; --warn:#F0A945; --over:#FF7A8A; --shadow:0 1px 0 var(--line),0 18px 36px -20px rgb(0 0 0 / .7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B0E24; --surface:#141938; --sunk:#10143A; --fg:#EEF0FA; --muted:#9AA1C7; --line:#262C55;
+  --accent:#6F86FF; --accent-ink:#0B0E24; --sun:#E2B24F; --sun-ink:#1E1500;
+  --ok:#4FCB8E; --warn:#F0A945; --over:#FF7A8A; --shadow:0 1px 0 var(--line),0 18px 36px -20px rgb(0 0 0 / .7); color-scheme:dark}
+body{font-size:15.5px;letter-spacing:.005em}
+.brand h1,.hero h2,.sec-h h3,.suggest h3,.view h2,.biz-h h3,.friend h3,.boom .bcard h4,.story h4,.sheet h3,.pp b,.stepper output,.stats b{font-family:var(--display);font-weight:700}
+.brand h1{font-size:34px;color:var(--fg);letter-spacing:0}
+.beta{background:none;border:1px solid var(--sun);color:var(--sun)}
+.demo{background:none;color:var(--muted);padding:0;font-size:12px;border-radius:0}
+.tagline b{font-family:var(--display);color:var(--accent);font-size:20px}
+
+/* hero: the photo is the stage, the question sits on it */
+.hero{position:relative;border-radius:26px;overflow:hidden;min-height:540px;padding:22px;justify-content:flex-end;color:#fff;gap:10px;isolation:isolate;box-shadow:var(--shadow)}
+.hero-art{position:absolute;inset:0;border-radius:0;aspect-ratio:auto;z-index:-2}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:var(--zellige),linear-gradient(180deg,rgb(12 16 48 / 0) 0%,rgb(12 16 48 / .15) 22%,rgb(12 16 48 / .78) 52%,rgb(12 16 48 / .95) 100%)}
+.hero h2,.hero p{text-shadow:0 2px 18px rgb(12 16 48 / .55)}
+.hero h2{font-size:clamp(34px,9vw,52px);line-height:1.02;margin:0;color:#fff;text-wrap:balance}
+.hero p{color:rgb(255 255 255 / .86);margin:0;max-width:44ch}
+.hero .btn.cta{background:var(--sun);color:var(--sun-ink);border-radius:14px;padding:13px 22px;box-shadow:0 10px 24px -10px rgb(200 145 46 / .8)}
+.hero .link{color:#fff}
+.hero .trust{color:rgb(255 255 255 / .8)}
+.hero .trust li::before{color:var(--sun)}
+
+/* navigation: ink pill */
+.mainnav{background:var(--surface);box-shadow:var(--shadow);border-radius:18px;padding:5px}
+.mainnav [aria-current="true"]{background:var(--fg);color:var(--bg);box-shadow:none}
+.langs{background:var(--surface);box-shadow:0 1px 0 var(--line)}
+.langs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);box-shadow:none}
+.signin{border:0;background:var(--fg);color:var(--bg)}
+
+/* surfaces */
+.panel,.card,.post,.meet,.mini,.stats div,.friend,.tier{border:0;box-shadow:var(--shadow);border-radius:var(--r)}
+.panel{padding:18px}
+.city{border:0;box-shadow:0 1px 0 var(--line);border-radius:16px;background:var(--surface)}
+.city[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.city.near{box-shadow:inset 0 0 0 1.5px var(--accent);background:var(--surface)}
+.chip{border-color:var(--line);background:transparent}
+.chip[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
+.pp{background:var(--sunk);border-radius:14px}
+.pp b{color:var(--sun)}
+.card .price b{color:var(--accent)}
+.add{border-radius:12px}
+.add[aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+
+/* suggested plan: the second zellige moment */
+.suggest{background:var(--zellige),linear-gradient(135deg,#2F4BD8,#12163A);color:#fff;border-radius:22px;box-shadow:var(--shadow)}
+.suggest button{background:var(--sun);color:var(--sun-ink);border-radius:12px}
+.suggest.empty{background:var(--sunk);color:var(--fg)}
+
+/* floating glass dock for the plan */
+.tray{left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  border:1px solid var(--line);border-radius:24px;padding:12px 14px;
+  background:color-mix(in srgb,var(--surface) 93%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:0 20px 50px -18px rgb(12 16 48 / .45)}
+.tray{transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.tray.dock-away{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
+.btn.wa{border-radius:14px}
+.btn.ghost{background:var(--sunk);border-radius:14px}
+.btn.cta{border-radius:14px}
+.biz{background:var(--surface);box-shadow:var(--shadow);border-radius:22px}
+.tier.feat{box-shadow:inset 0 0 0 2px var(--sun),var(--shadow)}
+.sheet{border-radius:26px 26px 0 0}
+.boom .bcard{border-radius:28px}
+.story{background:linear-gradient(180deg,rgb(12 16 48 / .45),rgb(12 16 48 / .92) 55%),url(img/food-table.jpg) center/cover}
+.story .s-num b{color:var(--sun)}
+.toast{background:var(--fg);color:var(--bg)}
 </style>
 </head>
 <body>
@@ -905,6 +990,11 @@ render();
 </script>
 
 <script src="js/kharja-motion.js"></script>
+<script>
+/* keep the hero clear: the plan dock slides in once the hero scrolls away */
+(function(){var h=document.querySelector(".hero"),t=document.getElementById("tray");if(!h||!t||!("IntersectionObserver" in window))return;
+new IntersectionObserver(function(e){t.classList.toggle("dock-away",e[0].intersectionRatio>0.45&&S.view==="explore")},{threshold:[0,0.45,1]}).observe(h)})();
+</script>
 <script type="module" src="js/kharja-firebase.js"></script>
 <script type="module" src="js/kharja-social.js"></script>
 <script type="module" src="js/kharja-meet.js"></script>
