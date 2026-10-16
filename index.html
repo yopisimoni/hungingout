@@ -248,6 +248,20 @@ footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:
 .fld2 label{font-size:12.5px;font-weight:600;color:var(--muted)}
 .fld2 input,.fld2 select,.compose select{padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--surface);width:100%}
 .check{display:flex;gap:8px;align-items:flex-start;font-size:13.5px}
+@keyframes kIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes kInR{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes kInL{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+@keyframes kBump{0%{transform:scale(1)}35%{transform:scale(1.07)}70%{transform:scale(.98)}100%{transform:scale(1)}}
+.k-in{animation:kIn .45s cubic-bezier(.2,.8,.2,1) both}
+.k-in.k-right{animation-name:kInR}.k-in.k-left{animation-name:kInL}
+.k-bump{animation:kBump .38s cubic-bezier(.3,1.4,.5,1)}
+.k-fly{position:fixed;left:0;top:0;z-index:65;pointer-events:none;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:13px;
+  padding:6px 12px;border-radius:999px;box-shadow:0 8px 24px rgb(0 0 0 / .25);white-space:nowrap;max-width:70vw;overflow:hidden;text-overflow:ellipsis}
+.chip,.city,.mainnav button,.add,.btn,.soc button{transition:transform .12s ease,background .15s,color .15s,border-color .15s}
+.chip:active,.city:active,.mainnav button:active,.add:active,.btn:active,.soc button:active{transform:scale(.94)}
+.card{transition:box-shadow .2s,transform .2s}
+@media (hover:hover){.card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgb(0 0 0 / .08)}}
+@media (prefers-reduced-motion:reduce){.k-in,.k-bump{animation:none!important}.chip,.city,.btn,.card{transition:none}}
 .vote .vb{flex-wrap:wrap;justify-content:flex-end}
 .vote .vb button{font-weight:600;transition:transform .12s}
 .vote .vb button:active{transform:scale(.92)}
@@ -890,6 +904,7 @@ try{const qc=new URLSearchParams(location.search).get("city");if(qc&&CITIES.some
 render();
 </script>
 
+<script src="js/kharja-motion.js"></script>
 <script type="module" src="js/kharja-firebase.js"></script>
 <script type="module" src="js/kharja-social.js"></script>
 <script type="module" src="js/kharja-meet.js"></script>
