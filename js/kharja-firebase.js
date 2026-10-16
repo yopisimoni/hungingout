@@ -164,26 +164,46 @@ async function openSharedPlan(id) {
     saved = { key: planKey(), id };
     render();
     $("friendView").scrollIntoView({ block: "start" });
+    let wasLocked = null;
     unsubVotes = onSnapshot(collection(db, "plans", id, "votes"), qs => {
-      const tally = {}; S.votes = {};
+      const tally = {}, crew = []; S.votes = {}; S.myReact = null;
       qs.forEach(v => {
-        const vv = v.data().v || {};
+        const data = v.data(), vv = data.v || {};
         for (const [pid, val] of Object.entries(vv)) {
           tally[pid] = tally[pid] || { y: 0, n: 0 };
           if (val === "y") tally[pid].y++; else if (val === "n") tally[pid].n++;
         }
-        if (S.user && v.id === S.user.uid) S.votes = { ...vv };
+        const yes = Object.values(vv).includes("y") && !Object.values(vv).includes("n");
+        crew.push({ name: data.name || "?", r: data.r || "", yes });
+        if (S.user && v.id === S.user.uid) { S.votes = { ...vv }; S.myReact = data.r || null; }
       });
-      S.tally = tally; render();
+      const need = Math.ceil(Math.max(1, S.people) / 2);
+      const locked = S.plan.length > 0 && S.plan.every(pid => (tally[pid] && tally[pid].y || 0) >= need);
+      S.tally = tally; S.crew = crew; S.locked = locked; render();
+      if (locked && wasLocked === false) {
+        const F = FUN[S.lang] || FUN.en;
+        celebrate("🎉", F.locked, F.of(crew.filter(c => c.yes).length, S.people), ["🎉", "✨", "🥳", "🕺", "🔥"]);
+      }
+      wasLocked = locked;
     });
   } catch (e) { alertMsg(t("err")); }
 }
 
-function vote(pid, val) {
+function vote(pid, val, btn) {
   requireUser(async () => {
     try {
       await setDoc(doc(db, "plans", S.shared.id, "votes", S.user.uid),
-        { name: S.user.displayName || "", v: { [pid]: val }, at: serverTimestamp() }, { merge: true });
+        { name: S.user.displayName || (S.user.email || "").split("@")[0], v: { [pid]: val }, at: serverTimestamp() }, { merge: true });
+      onVote(val, btn);
+    } catch (e) { alertMsg(t("err")); }
+  }, t("voteSign"));
+}
+
+function react(r) {
+  requireUser(async () => {
+    try {
+      await setDoc(doc(db, "plans", S.shared.id, "votes", S.user.uid),
+        { name: S.user.displayName || (S.user.email || "").split("@")[0], r, at: serverTimestamp() }, { merge: true });
     } catch (e) { alertMsg(t("err")); }
   }, t("voteSign"));
 }
@@ -211,7 +231,7 @@ function alertMsg(text) {
   setTimeout(() => { el.style.color = ""; render(); }, 3500);
 }
 
-window.KX = { google, emailAuth, userBtn, share, vote, listing, t };
+window.KX = { google, emailAuth, userBtn, share, vote, react, listing, t };
 
 const planId = new URLSearchParams(location.search).get("plan");
 if (planId && /^[A-Za-z0-9]{10,40}$/.test(planId)) openSharedPlan(planId);

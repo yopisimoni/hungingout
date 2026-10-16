@@ -186,6 +186,30 @@ details.over-list summary{cursor:pointer;color:var(--muted);font-size:14px;paddi
 @media (max-width:420px){.f2{grid-template-columns:1fr}}
 .btn.send{background:var(--accent);color:var(--accent-ink);margin-top:10px}
 footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:4px}
+.vote .vb{flex-wrap:wrap;justify-content:flex-end}
+.vote .vb button{font-weight:600;transition:transform .12s}
+.vote .vb button:active{transform:scale(.92)}
+.vote .vb button[data-v="y"][aria-pressed="true"]{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.react{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.react button{font-size:24px;line-height:1;border:1px solid var(--line);background:var(--sunk);border-radius:14px;padding:8px 10px}
+.react button[aria-pressed="true"]{border-color:var(--accent);background:var(--surface);box-shadow:0 0 0 2px var(--accent)}
+.crew{display:flex;flex-wrap:wrap;gap:6px}
+.crew span{display:inline-flex;align-items:center;gap:6px;background:var(--sunk);border-radius:999px;padding:4px 10px 4px 4px;font-size:13px}
+.crew i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:12px}
+.locked{border-radius:14px;padding:12px 14px;background:var(--sun);color:var(--sun-ink);font-weight:700;display:flex;align-items:center;gap:10px}
+.locked b{font-size:26px}
+.meter{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--sun));transition:width .5s}
+.boom{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none}
+.boom .bcard{pointer-events:auto;background:var(--surface);color:var(--fg);border-radius:24px;padding:22px 26px;text-align:center;box-shadow:0 20px 60px rgb(0 0 0 / .3);
+  max-width:min(320px,calc(100vw - 32px));animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+.boom .bcard .e{font-size:64px;line-height:1;display:block;animation:wob 1s ease-in-out infinite alternate}
+.boom .bcard h4{font-family:var(--display);font-weight:400;font-size:28px;margin:8px 0 4px}
+.boom .bcard p{margin:0;color:var(--muted)}
+.fly{position:fixed;z-index:61;font-size:28px;pointer-events:none;will-change:transform,opacity}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes wob{from{transform:rotate(-8deg) scale(1)}to{transform:rotate(8deg) scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.boom .bcard,.boom .bcard .e{animation:none}}
 footer a{color:inherit}
 @media (prefers-reduced-motion:no-preference){.card,.chip,.add{transition:background .15s,color .15s,border-color .15s}}
 </style>
@@ -415,7 +439,7 @@ const T = {
   tg:{sea:"البحر",sunset:"الغروب",park:"حديقة",view:"منظر",culture:"ثقافة",guided:"مع مرشد",street:"أكل الزنقة",traditional:"مغربي",sweet:"حلويات",brunch:"برانش",mall:"مول",family:"عائلي",garden:"جردة",live:"موسيقى حية",italian:"إيطالي",seafood:"حوت",show:"عرض",iconic:"مشهور",french:"فرنسي",cinema:"سينما",game:"لعبة",fun:"متعة"},
   trayEmpty:"زيد بلايص للخطة باش تشاركها",trayT:(pp,tot)=>"الخطة: "+pp+" للشخص · "+tot+" للمجموعة",
   left:r=>r>=0?"باقي "+r+" درهم":"زايد "+(-r)+" درهم على الميزانية",copy:"نسخ",copied:"تنسخ ✓",friend:"شوف كيف كتبان لصحابك",
-  frT:"خطة من صاحبك 👋",frP:"صوّت على كل بلاصة. الأصوات كتبان للمجموعة كاملة مباشرة.",frClose:"رجع للخطة ديالي",yes:"👍 موافق",no:"👎 لا",
+  frT:"خطة من صاحبك 👋",frP:"صوّت على كل بلاصة. الأصوات كتبان للمجموعة كاملة مباشرة.",frClose:"رجع للخطة ديالي",yes:"🔥 واحد البلان!",no:"😴 ماشي هاد المرة",
   wa:(n,b,stops,pp,tot)=>"🗓️ خرجة فكازا\n👥 "+n+" أشخاص · ميزانية "+b+" درهم\n\n"+stops+"\n\n💸 تقريباً "+pp+" درهم للشخص ("+tot+" للمجموعة)\nواش موافقين؟",
   foot1:"الأسعار بالدرهم المغربي (MAD)، وتقريبية.",foot2:"المصادر: "},
  fr:{dir:"ltr",brand:"Kharja",sub:"Casa",demo:"Démo du concept. Lieux réels ; prix issus de sources publiées ou estimés, à vérifier avant le lancement.",
@@ -430,7 +454,7 @@ const T = {
   tg:{sea:"Mer",sunset:"Coucher de soleil",park:"Parc",view:"Vue",culture:"Culture",guided:"Guidé",street:"Street food",traditional:"Marocain",sweet:"Sucré",brunch:"Brunch",mall:"Mall",family:"Famille",garden:"Jardin",live:"Live",italian:"Italien",seafood:"Poisson",show:"Spectacle",iconic:"Iconique",french:"Français",cinema:"Cinéma",game:"Jeu",fun:"Fun"},
   trayEmpty:"Ajoutez des lieux pour partager le plan",trayT:(pp,tot)=>"Plan : "+pp+" / pers. · "+tot+" groupe",
   left:r=>r>=0?"Reste "+r+" DH":"Dépasse de "+(-r)+" DH",copy:"Copier",copied:"Copié ✓",friend:"Vue de vos amis",
-  frT:"Plan d'un ami 👋",frP:"Votez pour chaque lieu. Les votes s'affichent en direct pour tout le groupe.",frClose:"Retour à mon plan",yes:"👍 Oui",no:"👎 Non",
+  frT:"Plan d'un ami 👋",frP:"Votez pour chaque lieu. Les votes s'affichent en direct pour tout le groupe.",frClose:"Retour à mon plan",yes:"🔥 Je suis chaud !",no:"😴 Pas cette fois",
   wa:(n,b,stops,pp,tot)=>"🗓️ Sortie à Casa\n👥 "+n+" pers. · budget "+b+" DH\n\n"+stops+"\n\n💸 Environ "+pp+" DH / pers. ("+tot+" pour le groupe)\nVous êtes chauds ?",
   foot1:"Prix en dirhams marocains (MAD), approximatifs.",foot2:"Sources : "},
  en:{dir:"ltr",brand:"Kharja",sub:"Casablanca",demo:"Concept demo. Real places; prices from published sources or estimated, to be checked before launch.",
@@ -445,7 +469,7 @@ const T = {
   tg:{sea:"Sea",sunset:"Sunset",park:"Park",view:"View",culture:"Culture",guided:"Guided",street:"Street food",traditional:"Moroccan",sweet:"Sweets",brunch:"Brunch",mall:"Mall",family:"Family",garden:"Garden",live:"Live music",italian:"Italian",seafood:"Seafood",show:"Show",iconic:"Iconic",french:"French",cinema:"Cinema",game:"Game",fun:"Fun"},
   trayEmpty:"Add places to share a plan",trayT:(pp,tot)=>"Plan: "+pp+" / person · "+tot+" group",
   left:r=>r>=0?r+" MAD left":(-r)+" MAD over budget",copy:"Copy",copied:"Copied ✓",friend:"See it as a friend",
-  frT:"A plan from your friend 👋",frP:"Vote on each stop. Votes show up live for the whole group.",frClose:"Back to my plan",yes:"👍 In",no:"👎 Out",
+  frT:"A plan from your friend 👋",frP:"Vote on each stop. Votes show up live for the whole group.",frClose:"Back to my plan",yes:"🔥 I'm in!",no:"😴 Not this time",
   wa:(n,b,stops,pp,tot)=>"🗓️ Night out in Casablanca\n👥 "+n+" people · budget "+b+" MAD\n\n"+stops+"\n\n💸 About "+pp+" MAD each ("+tot+" for the group)\nWho's in?",
   foot1:"Prices in Moroccan dirhams (MAD), approximate.",foot2:"Sources: "}
 };
@@ -511,7 +535,7 @@ T.es={dir:"ltr",brand:"Kharja",sub:"Marruecos",demo:"Demo del concepto. Lugares 
  tg:{sea:"Mar",sunset:"Atardecer",park:"Parque",view:"Vistas",culture:"Cultura",guided:"Guiado",street:"Comida callejera",traditional:"Marroquí",sweet:"Dulces",brunch:"Brunch",mall:"Centro comercial",family:"Familia",garden:"Jardín",live:"Música en vivo",italian:"Italiano",seafood:"Pescado",show:"Espectáculo",iconic:"Icónico",french:"Francés",cinema:"Cine",game:"Juego",fun:"Diversión"},
  trayEmpty:"Añade sitios para compartir un plan",trayT:(pp,tot)=>"Plan: "+pp+" / pers. · "+tot+" grupo",
  left:r=>r>=0?"Quedan "+r+" MAD":"Te pasas "+(-r)+" MAD",copy:"Copiar",copied:"Copiado ✓",friend:"Verlo como un amigo",
- frT:"Un plan de tu amigo 👋",frP:"Vota cada parada. Los votos se ven en directo para todo el grupo.",frClose:"Volver a mi plan",yes:"👍 Me apunto",no:"👎 Paso",
+ frT:"Un plan de tu amigo 👋",frP:"Vota cada parada. Los votos se ven en directo para todo el grupo.",frClose:"Volver a mi plan",yes:"🔥 ¡Me apunto!",no:"😴 Esta vez no",
  wa:(n,b,stops,pp,tot,city)=>"🗓️ Salida en "+city+"\n👥 "+n+" personas · presupuesto "+b+" MAD\n\n"+stops+"\n\n💸 Unos "+pp+" MAD cada uno ("+tot+" el grupo)\n¿Quién se apunta?",
  foot1:"Precios en dírhams marroquíes (MAD), aproximados.",foot2:"Fuentes: ",places:n=>n+" sitios",soon:"Ciudad 7",soonS:"Próximamente",
  bizT:"¿Tienes un café, restaurante o actividad?",bizP:"Añade tu sitio en Kharja y que te encuentren quienes buscan salir con su presupuesto, locales y turistas.",
@@ -535,7 +559,7 @@ T.pt={dir:"ltr",brand:"Kharja",sub:"Marrocos",demo:"Demo do conceito. Locais rea
  tg:{sea:"Mar",sunset:"Pôr do sol",park:"Parque",view:"Vista",culture:"Cultura",guided:"Guiado",street:"Comida de rua",traditional:"Marroquino",sweet:"Doces",brunch:"Brunch",mall:"Centro comercial",family:"Família",garden:"Jardim",live:"Música ao vivo",italian:"Italiano",seafood:"Peixe",show:"Espetáculo",iconic:"Icónico",french:"Francês",cinema:"Cinema",game:"Jogo",fun:"Diversão"},
  trayEmpty:"Adiciona sítios para partilhar um plano",trayT:(pp,tot)=>"Plano: "+pp+" / pessoa · "+tot+" grupo",
  left:r=>r>=0?"Sobram "+r+" MAD":"Passa "+(-r)+" MAD do orçamento",copy:"Copiar",copied:"Copiado ✓",friend:"Ver como um amigo",
- frT:"Um plano do teu amigo 👋",frP:"Vota em cada paragem. Os votos aparecem em direto para todo o grupo.",frClose:"Voltar ao meu plano",yes:"👍 Alinho",no:"👎 Passo",
+ frT:"Um plano do teu amigo 👋",frP:"Vota em cada paragem. Os votos aparecem em direto para todo o grupo.",frClose:"Voltar ao meu plano",yes:"🔥 Alinho!",no:"😴 Desta vez não",
  wa:(n,b,stops,pp,tot,city)=>"🗓️ Saída em "+city+"\n👥 "+n+" pessoas · orçamento "+b+" MAD\n\n"+stops+"\n\n💸 Cerca de "+pp+" MAD cada ("+tot+" o grupo)\nQuem alinha?",
  foot1:"Preços em dirhams marroquinos (MAD), aproximados.",foot2:"Fontes: ",places:n=>n+" sítios",soon:"Cidade 7",soonS:"Em breve",
  bizT:"Tens um café, restaurante ou atividade?",bizP:"Adiciona o teu sítio no Kharja e sê encontrado por quem procura sair dentro do orçamento, locais e turistas.",
@@ -555,6 +579,39 @@ Object.assign(T.en.tg,{nature:"Nature",lake:"Lake",forest:"Forest"});Object.assi
 Object.assign(T.pt.tg,{nature:"Natureza",lake:"Lago",forest:"Floresta"});
 Object.assign(T.ar,{soon:"مدن أخرى",soonS:"قريباً"});Object.assign(T.fr,{soon:"Autres villes",soonS:"Bientôt"});Object.assign(T.en,{soon:"More cities",soonS:"Coming soon"});
 Object.assign(T.es,{soon:"Más ciudades",soonS:"Próximamente"});Object.assign(T.pt,{soon:"Mais cidades",soonS:"Em breve"});
+
+/* ---------- Fun layer strings ---------- */
+const FUN={
+ ar:{yesT:"واحد البلان! 🎉",yesP:"تزاد صوتك. يلا نخرجو!",noT:"ماشي مشكل 😌",noP:"المرة الجاية إن شاء الله.",react:"بعث رياكشن",crew:"شكون جاي",locked:"البلان تقاد! نتلاقاو تما ✨",of:(a,b)=>a+" من "+b+" موافقين"},
+ fr:{yesT:"C'est validé ! 🎉",yesP:"Ton vote est compté. Yalla !",noT:"Pas de souci 😌",noP:"Ce sera pour la prochaine.",react:"Envoie une réaction",crew:"Qui vient",locked:"Plan validé ! On se retrouve là-bas ✨",of:(a,b)=>a+" sur "+b+" partants"},
+ en:{yesT:"You're in! 🎉",yesP:"Vote counted. Yalla!",noT:"No worries 😌",noP:"Maybe next time.",react:"Send a reaction",crew:"Who's coming",locked:"Plan locked! See you there ✨",of:(a,b)=>a+" of "+b+" are in"},
+ es:{yesT:"¡Te apuntaste! 🎉",yesP:"Voto contado. ¡Yalla!",noT:"Tranqui 😌",noP:"La próxima será.",react:"Envía una reacción",crew:"Quién viene",locked:"¡Plan cerrado! Nos vemos allí ✨",of:(a,b)=>a+" de "+b+" se apuntan"},
+ pt:{yesT:"Estás dentro! 🎉",yesP:"Voto contado. Yalla!",noT:"Tranquilo 😌",noP:"Fica para a próxima.",react:"Envia uma reação",crew:"Quem vem",locked:"Plano fechado! Vemo-nos lá ✨",of:(a,b)=>a+" de "+b+" alinham"}};
+const REACTS=["🔥","😍","😂","🤑","🕺","🙌"];
+const reduceMotion=(()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}})();
+function burst(emojis,x,y,n){
+  if(reduceMotion)return;
+  x=x??innerWidth/2;y=y??innerHeight/2;n=n||18;
+  for(let i=0;i<n;i++){const s=document.createElement("span");s.className="fly";s.textContent=emojis[i%emojis.length];
+    s.style.left=x+"px";s.style.top=y+"px";document.body.appendChild(s);
+    const a=Math.random()*Math.PI*2,d=80+Math.random()*180,dx=Math.cos(a)*d,dy=Math.sin(a)*d-120;
+    s.animate([{transform:"translate(-50%,-50%) scale(.6)",opacity:1},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(1.2) rotate(${(Math.random()-.5)*90}deg)`,opacity:0}],
+      {duration:900+Math.random()*700,easing:"cubic-bezier(.2,.8,.3,1)"}).onfinish=()=>s.remove();}
+}
+function celebrate(emoji,title,sub,confetti){
+  document.querySelectorAll(".boom").forEach(b=>b.remove());
+  const w=document.createElement("div");w.className="boom";w.setAttribute("role","status");
+  w.innerHTML='<div class="bcard"><span class="e"></span><h4></h4><p></p></div>';
+  w.querySelector(".e").textContent=emoji;w.querySelector("h4").textContent=title;w.querySelector("p").textContent=sub;
+  document.body.appendChild(w);w.querySelector(".bcard").onclick=()=>w.remove();
+  if(confetti)burst(confetti,undefined,undefined,26);
+  setTimeout(()=>w.remove(),2200);
+}
+function onVote(val,btn){
+  const F=FUN[S.lang]||FUN.en,r=btn&&btn.getBoundingClientRect();
+  if(val==="y"){burst(["🔥","🎉","✨","🥳"],r?r.left+r.width/2:undefined,r?r.top:undefined,14);celebrate("🥳",F.yesT,F.yesP,["🎉","✨","🔥","🥳","💃"])}
+  else celebrate("😌",F.noT,F.noP);
+}
 
 /* ---------- State ---------- */
 const S = {lang:"ar",city:"casa",people:4,budget:600,vibe:"any",cat:"all",plan:[],friend:false,votes:{}};
@@ -669,9 +726,17 @@ function render(){
     fv.innerHTML=`<h3>${L.frT}</h3><p class="note" style="margin:0">${L.frP}</p>`+
       stops.map(p=>`<div class="vote"><span><b></b><br><small class="num">${p.p[1]===0?L.free:rng(p.p[0],p.p[1])+" "+L.mad+" "+L.perP}${S.tally&&S.tally[p.id]?" · 👍 "+S.tally[p.id].y+" · 👎 "+S.tally[p.id].n:""}</small></span>
         <span class="vb"><button data-id="${p.id}" data-v="y" aria-pressed="${S.votes[p.id]==="y"}">${L.yes}</button><button data-id="${p.id}" data-v="n" aria-pressed="${S.votes[p.id]==="n"}">${L.no}</button></span></div>`).join("")+
+      (()=>{const F=FUN[S.lang]||FUN.en;const inN=S.crew?S.crew.filter(c=>c.yes).length:Object.values(S.votes).includes("y")?1:0;const pct=Math.min(100,Math.round(inN/Math.max(1,S.people)*100));
+        return `<div class="meter" aria-hidden="true"><span style="width:${pct}%"></span></div><small class="note num">${F.of(fmt(inN),fmt(S.people))}</small>`+
+        (S.locked?`<div class="locked"><b>🎉</b><span>${F.locked}</span></div>`:"")+
+        `<span class="lbl">${F.react}</span><div class="react">${REACTS.map(e=>`<button data-r="${e}" aria-pressed="${S.myReact===e}" aria-label="${e}">${e}</button>`).join("")}</div>`+
+        (S.crew&&S.crew.length?`<span class="lbl">${F.crew}</span><div class="crew">${S.crew.map(c=>`<span><i></i><em style="font-style:normal"></em>${c.r||(c.yes?"🔥":"😴")}</span>`).join("")}</div>`:"")})()+
       `<button class="btn ghost" id="frClose" style="align-self:flex-start">${L.frClose}</button>`;
     fv.querySelectorAll(".vote b").forEach((b,i)=>b.textContent=stops[i].n);
-    fv.querySelectorAll(".vb button").forEach(b=>b.onclick=()=>{if(S.shared&&window.KX){KX.vote(b.dataset.id,b.dataset.v)}else{S.votes[b.dataset.id]=b.dataset.v;render()}});
+    fv.querySelectorAll(".vb button").forEach(b=>b.onclick=()=>{if(S.shared&&window.KX){KX.vote(b.dataset.id,b.dataset.v,b)}else{S.votes[b.dataset.id]=b.dataset.v;render();onVote(b.dataset.v,b)}});
+    fv.querySelectorAll(".react button").forEach(b=>b.onclick=()=>{const r=b.getBoundingClientRect();burst([b.dataset.r],r.left+r.width/2,r.top,12);
+      if(S.shared&&window.KX){KX.react(b.dataset.r)}else{S.myReact=b.dataset.r;render()}});
+    if(S.crew)fv.querySelectorAll(".crew span").forEach((el,i)=>{const n=S.crew[i].name||"?";el.querySelector("i").textContent=n.trim().charAt(0).toUpperCase();el.querySelector("em").textContent=n.split(" ")[0]});
     $("frClose").onclick=()=>{S.friend=false;render()};
   }else{fv.hidden=true}
 
