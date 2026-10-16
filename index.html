@@ -415,7 +415,7 @@ const T = {
   tg:{sea:"البحر",sunset:"الغروب",park:"حديقة",view:"منظر",culture:"ثقافة",guided:"مع مرشد",street:"أكل الزنقة",traditional:"مغربي",sweet:"حلويات",brunch:"برانش",mall:"مول",family:"عائلي",garden:"جردة",live:"موسيقى حية",italian:"إيطالي",seafood:"حوت",show:"عرض",iconic:"مشهور",french:"فرنسي",cinema:"سينما",game:"لعبة",fun:"متعة"},
   trayEmpty:"زيد بلايص للخطة باش تشاركها",trayT:(pp,tot)=>"الخطة: "+pp+" للشخص · "+tot+" للمجموعة",
   left:r=>r>=0?"باقي "+r+" درهم":"زايد "+(-r)+" درهم على الميزانية",copy:"نسخ",copied:"تنسخ ✓",friend:"شوف كيف كتبان لصحابك",
-  frT:"خطة من صاحبك 👋",frP:"صوّت على كل بلاصة. فالنسخة الحقيقية الأصوات كتوصل للمجموعة كاملة.",frClose:"رجع للخطة ديالي",yes:"👍 موافق",no:"👎 لا",
+  frT:"خطة من صاحبك 👋",frP:"صوّت على كل بلاصة. الأصوات كتبان للمجموعة كاملة مباشرة.",frClose:"رجع للخطة ديالي",yes:"👍 موافق",no:"👎 لا",
   wa:(n,b,stops,pp,tot)=>"🗓️ خرجة فكازا\n👥 "+n+" أشخاص · ميزانية "+b+" درهم\n\n"+stops+"\n\n💸 تقريباً "+pp+" درهم للشخص ("+tot+" للمجموعة)\nواش موافقين؟",
   foot1:"الأسعار بالدرهم المغربي (MAD)، وتقريبية.",foot2:"المصادر: "},
  fr:{dir:"ltr",brand:"Kharja",sub:"Casa",demo:"Démo du concept. Lieux réels ; prix issus de sources publiées ou estimés, à vérifier avant le lancement.",
@@ -430,7 +430,7 @@ const T = {
   tg:{sea:"Mer",sunset:"Coucher de soleil",park:"Parc",view:"Vue",culture:"Culture",guided:"Guidé",street:"Street food",traditional:"Marocain",sweet:"Sucré",brunch:"Brunch",mall:"Mall",family:"Famille",garden:"Jardin",live:"Live",italian:"Italien",seafood:"Poisson",show:"Spectacle",iconic:"Iconique",french:"Français",cinema:"Cinéma",game:"Jeu",fun:"Fun"},
   trayEmpty:"Ajoutez des lieux pour partager le plan",trayT:(pp,tot)=>"Plan : "+pp+" / pers. · "+tot+" groupe",
   left:r=>r>=0?"Reste "+r+" DH":"Dépasse de "+(-r)+" DH",copy:"Copier",copied:"Copié ✓",friend:"Vue de vos amis",
-  frT:"Plan d'un ami 👋",frP:"Votez pour chaque lieu. Dans la vraie app, les votes arrivent à tout le groupe.",frClose:"Retour à mon plan",yes:"👍 Oui",no:"👎 Non",
+  frT:"Plan d'un ami 👋",frP:"Votez pour chaque lieu. Les votes s'affichent en direct pour tout le groupe.",frClose:"Retour à mon plan",yes:"👍 Oui",no:"👎 Non",
   wa:(n,b,stops,pp,tot)=>"🗓️ Sortie à Casa\n👥 "+n+" pers. · budget "+b+" DH\n\n"+stops+"\n\n💸 Environ "+pp+" DH / pers. ("+tot+" pour le groupe)\nVous êtes chauds ?",
   foot1:"Prix en dirhams marocains (MAD), approximatifs.",foot2:"Sources : "},
  en:{dir:"ltr",brand:"Kharja",sub:"Casablanca",demo:"Concept demo. Real places; prices from published sources or estimated, to be checked before launch.",
@@ -445,7 +445,7 @@ const T = {
   tg:{sea:"Sea",sunset:"Sunset",park:"Park",view:"View",culture:"Culture",guided:"Guided",street:"Street food",traditional:"Moroccan",sweet:"Sweets",brunch:"Brunch",mall:"Mall",family:"Family",garden:"Garden",live:"Live music",italian:"Italian",seafood:"Seafood",show:"Show",iconic:"Iconic",french:"French",cinema:"Cinema",game:"Game",fun:"Fun"},
   trayEmpty:"Add places to share a plan",trayT:(pp,tot)=>"Plan: "+pp+" / person · "+tot+" group",
   left:r=>r>=0?r+" MAD left":(-r)+" MAD over budget",copy:"Copy",copied:"Copied ✓",friend:"See it as a friend",
-  frT:"A plan from your friend 👋",frP:"Vote on each stop. In the real app, votes reach the whole group.",frClose:"Back to my plan",yes:"👍 In",no:"👎 Out",
+  frT:"A plan from your friend 👋",frP:"Vote on each stop. Votes show up live for the whole group.",frClose:"Back to my plan",yes:"👍 In",no:"👎 Out",
   wa:(n,b,stops,pp,tot)=>"🗓️ Night out in Casablanca\n👥 "+n+" people · budget "+b+" MAD\n\n"+stops+"\n\n💸 About "+pp+" MAD each ("+tot+" for the group)\nWho's in?",
   foot1:"Prices in Moroccan dirhams (MAD), approximate.",foot2:"Sources: "}
 };
@@ -511,7 +511,7 @@ T.es={dir:"ltr",brand:"Kharja",sub:"Marruecos",demo:"Demo del concepto. Lugares 
  tg:{sea:"Mar",sunset:"Atardecer",park:"Parque",view:"Vistas",culture:"Cultura",guided:"Guiado",street:"Comida callejera",traditional:"Marroquí",sweet:"Dulces",brunch:"Brunch",mall:"Centro comercial",family:"Familia",garden:"Jardín",live:"Música en vivo",italian:"Italiano",seafood:"Pescado",show:"Espectáculo",iconic:"Icónico",french:"Francés",cinema:"Cine",game:"Juego",fun:"Diversión"},
  trayEmpty:"Añade sitios para compartir un plan",trayT:(pp,tot)=>"Plan: "+pp+" / pers. · "+tot+" grupo",
  left:r=>r>=0?"Quedan "+r+" MAD":"Te pasas "+(-r)+" MAD",copy:"Copiar",copied:"Copiado ✓",friend:"Verlo como un amigo",
- frT:"Un plan de tu amigo 👋",frP:"Vota cada parada. En la app real, los votos llegan a todo el grupo.",frClose:"Volver a mi plan",yes:"👍 Me apunto",no:"👎 Paso",
+ frT:"Un plan de tu amigo 👋",frP:"Vota cada parada. Los votos se ven en directo para todo el grupo.",frClose:"Volver a mi plan",yes:"👍 Me apunto",no:"👎 Paso",
  wa:(n,b,stops,pp,tot,city)=>"🗓️ Salida en "+city+"\n👥 "+n+" personas · presupuesto "+b+" MAD\n\n"+stops+"\n\n💸 Unos "+pp+" MAD cada uno ("+tot+" el grupo)\n¿Quién se apunta?",
  foot1:"Precios en dírhams marroquíes (MAD), aproximados.",foot2:"Fuentes: ",places:n=>n+" sitios",soon:"Ciudad 7",soonS:"Próximamente",
  bizT:"¿Tienes un café, restaurante o actividad?",bizP:"Añade tu sitio en Kharja y que te encuentren quienes buscan salir con su presupuesto, locales y turistas.",
@@ -535,7 +535,7 @@ T.pt={dir:"ltr",brand:"Kharja",sub:"Marrocos",demo:"Demo do conceito. Locais rea
  tg:{sea:"Mar",sunset:"Pôr do sol",park:"Parque",view:"Vista",culture:"Cultura",guided:"Guiado",street:"Comida de rua",traditional:"Marroquino",sweet:"Doces",brunch:"Brunch",mall:"Centro comercial",family:"Família",garden:"Jardim",live:"Música ao vivo",italian:"Italiano",seafood:"Peixe",show:"Espetáculo",iconic:"Icónico",french:"Francês",cinema:"Cinema",game:"Jogo",fun:"Diversão"},
  trayEmpty:"Adiciona sítios para partilhar um plano",trayT:(pp,tot)=>"Plano: "+pp+" / pessoa · "+tot+" grupo",
  left:r=>r>=0?"Sobram "+r+" MAD":"Passa "+(-r)+" MAD do orçamento",copy:"Copiar",copied:"Copiado ✓",friend:"Ver como um amigo",
- frT:"Um plano do teu amigo 👋",frP:"Vota em cada paragem. Na app real, os votos chegam a todo o grupo.",frClose:"Voltar ao meu plano",yes:"👍 Alinho",no:"👎 Passo",
+ frT:"Um plano do teu amigo 👋",frP:"Vota em cada paragem. Os votos aparecem em direto para todo o grupo.",frClose:"Voltar ao meu plano",yes:"👍 Alinho",no:"👎 Passo",
  wa:(n,b,stops,pp,tot,city)=>"🗓️ Saída em "+city+"\n👥 "+n+" pessoas · orçamento "+b+" MAD\n\n"+stops+"\n\n💸 Cerca de "+pp+" MAD cada ("+tot+" o grupo)\nQuem alinha?",
  foot1:"Preços em dirhams marroquinos (MAD), aproximados.",foot2:"Fontes: ",places:n=>n+" sítios",soon:"Cidade 7",soonS:"Em breve",
  bizT:"Tens um café, restaurante ou atividade?",bizP:"Adiciona o teu sítio no Kharja e sê encontrado por quem procura sair dentro do orçamento, locais e turistas.",
@@ -667,16 +667,16 @@ function render(){
   const fv=$("friendView");
   if(S.friend&&has){fv.hidden=false;fv.className="friend";
     fv.innerHTML=`<h3>${L.frT}</h3><p class="note" style="margin:0">${L.frP}</p>`+
-      stops.map(p=>`<div class="vote"><span><b></b><br><small class="num">${p.p[1]===0?L.free:rng(p.p[0],p.p[1])+" "+L.mad+" "+L.perP}</small></span>
+      stops.map(p=>`<div class="vote"><span><b></b><br><small class="num">${p.p[1]===0?L.free:rng(p.p[0],p.p[1])+" "+L.mad+" "+L.perP}${S.tally&&S.tally[p.id]?" · 👍 "+S.tally[p.id].y+" · 👎 "+S.tally[p.id].n:""}</small></span>
         <span class="vb"><button data-id="${p.id}" data-v="y" aria-pressed="${S.votes[p.id]==="y"}">${L.yes}</button><button data-id="${p.id}" data-v="n" aria-pressed="${S.votes[p.id]==="n"}">${L.no}</button></span></div>`).join("")+
       `<button class="btn ghost" id="frClose" style="align-self:flex-start">${L.frClose}</button>`;
     fv.querySelectorAll(".vote b").forEach((b,i)=>b.textContent=stops[i].n);
-    fv.querySelectorAll(".vb button").forEach(b=>b.onclick=()=>{S.votes[b.dataset.id]=b.dataset.v;render()});
+    fv.querySelectorAll(".vb button").forEach(b=>b.onclick=()=>{if(S.shared&&window.KX){KX.vote(b.dataset.id,b.dataset.v)}else{S.votes[b.dataset.id]=b.dataset.v;render()}});
     $("frClose").onclick=()=>{S.friend=false;render()};
   }else{fv.hidden=true}
 
   // auth + trust
-  $("signinBtn").textContent=L.signin;$("ctaSignup").textContent=L.ctaUp;$("ctaSignin").textContent=L.ctaIn;
+  $("signinBtn").textContent=S.user?(S.signOutAsk?(window.KX?KX.t("out"):"↩"):"👤 "+((S.user.displayName||S.user.email||"").split(/[ @]/)[0])):L.signin;$("ctaSignup").parentElement.hidden=!!S.user;$("ssoA").hidden=true;$("ctaSignup").textContent=L.ctaUp;$("ctaSignin").textContent=L.ctaIn;
   $("trust").innerHTML="";L.trust.forEach(t=>{const li=document.createElement("li");li.textContent=t;$("trust").appendChild(li)});
   const up=S.auth==="up";
   $("tab-up").textContent=L.tabUp;$("tab-in").textContent=L.tabIn;$("tab-up").setAttribute("aria-selected",String(up));$("tab-in").setAttribute("aria-selected",String(!up));
@@ -706,20 +706,20 @@ $("minus").onclick=()=>{S.people=Math.max(1,S.people-1);render()};
 $("plus").onclick=()=>{S.people=Math.min(12,S.people+1);render()};
 $("budget").addEventListener("input",e=>{const v=parseInt(e.target.value,10);S.budget=isNaN(v)||v<0?0:v;render()});
 document.querySelectorAll(".langs button").forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;try{localStorage.setItem("kharja-lang",S.lang)}catch(e){};render()});
-$("copyBtn").onclick=async()=>{const L=T[S.lang],m=$("waBtn").dataset.msg;try{await navigator.clipboard.writeText(m);$("copyBtn").textContent=L.copied;setTimeout(()=>$("copyBtn").textContent=L.copy,1500)}catch(e){const ta=document.createElement("textarea");ta.value=m;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("copyBtn").textContent=L.copied}catch(_){};ta.remove()}};
+$("copyBtn").onclick=async()=>{if(window.KX)return KX.share("copy");const L=T[S.lang],m=$("waBtn").dataset.msg;try{await navigator.clipboard.writeText(m);$("copyBtn").textContent=L.copied;setTimeout(()=>$("copyBtn").textContent=L.copy,1500)}catch(e){const ta=document.createElement("textarea");ta.value=m;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("copyBtn").textContent=L.copied}catch(_){};ta.remove()}};
 S.auth="up";
 const openAuth=m=>{S.auth=m;$("auMsg").textContent="";render();$("authBg").hidden=false;$("ssoG").focus()};
 const closeAuth=()=>{$("authBg").hidden=true};
-$("signinBtn").onclick=()=>openAuth("in");$("ctaSignin").onclick=()=>openAuth("in");$("ctaSignup").onclick=()=>openAuth("up");
+$("signinBtn").onclick=()=>{if(S.user&&window.KX)return KX.userBtn();openAuth("in")};$("ctaSignin").onclick=()=>openAuth("in");$("ctaSignup").onclick=()=>openAuth("up");
 $("tab-up").onclick=()=>{S.auth="up";render()};$("tab-in").onclick=()=>{S.auth="in";render()};
 $("authClose").onclick=closeAuth;$("authBg").addEventListener("click",e=>{if(e.target===$("authBg"))closeAuth()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAuth()});
-["ssoG","ssoA"].forEach(id=>$(id).onclick=()=>{const m=$("auMsg");m.textContent=T[S.lang].auMsg;m.style.color="var(--muted)"});
-$("authForm").addEventListener("submit",e=>{e.preventDefault();const L=T[S.lang],m=$("auMsg");
+["ssoG","ssoA"].forEach(id=>$(id).onclick=()=>{if(window.KX&&id==="ssoG")return KX.google();const m=$("auMsg");m.textContent=T[S.lang].auMsg;m.style.color="var(--muted)"});
+$("authForm").addEventListener("submit",e=>{e.preventDefault();if(window.KX)return KX.emailAuth();const L=T[S.lang],m=$("auMsg");
   if(!$("au-email").value.trim()||!$("au-pass").value){m.textContent=L.auErr;m.style.color="var(--over)";return}
   m.textContent=L.auMsg;m.style.color="var(--muted)"});
 $("storyBtn").onclick=()=>{$("storyMsg").textContent=T[S.lang].storyMsg};
-$("bizForm").addEventListener("submit",e=>{e.preventDefault();const L=T[S.lang],n=$("bz-name").value.trim(),c=$("bz-contact").value.trim(),m=$("bzMsg");
+$("bizForm").addEventListener("submit",e=>{e.preventDefault();if(window.KX)return KX.listing();const L=T[S.lang],n=$("bz-name").value.trim(),c=$("bz-contact").value.trim(),m=$("bzMsg");
   if(!n||!c){m.textContent=L.bzErr;m.style.color="var(--over)";return}
   m.textContent=L.bzOk(n);m.style.color="var(--ok)"});
 $("friendBtn").onclick=()=>{S.friend=true;render();$("friendView").scrollIntoView({behavior:"smooth",block:"start"})};
@@ -729,5 +729,6 @@ S.plan=[24,6];
 render();
 </script>
 
+<script type="module" src="js/kharja-firebase.js"></script>
 </body>
 </html>
