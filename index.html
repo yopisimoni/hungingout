@@ -186,6 +186,49 @@ details.over-list summary{cursor:pointer;color:var(--muted);font-size:14px;paddi
 @media (max-width:420px){.f2{grid-template-columns:1fr}}
 .btn.send{background:var(--accent);color:var(--accent-ink);margin-top:10px}
 footer{color:var(--muted);font-size:12px;display:flex;flex-direction:column;gap:4px}
+.mainnav{display:flex;gap:6px;background:var(--sunk);border-radius:14px;padding:4px;position:sticky;top:env(safe-area-inset-top,0px);z-index:15;overflow-x:auto;scrollbar-width:none}
+.mainnav::-webkit-scrollbar{display:none}
+.mainnav button,.mainnav a{flex:1 0 auto;border:0;background:none;border-radius:10px;padding:9px 12px;font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;text-align:center;white-space:nowrap}
+.mainnav [aria-current="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgb(0 0 0 / .12)}
+.city.near{border-color:var(--accent);color:var(--accent)}
+.btn.more{align-self:center;justify-self:center;margin-top:4px}
+.soc{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+.soc button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:600;display:inline-flex;gap:5px;align-items:center}
+.soc button[aria-pressed="true"]{background:var(--sunk);border-color:var(--accent);color:var(--accent)}
+.soc .fav[aria-pressed="true"]{color:#E5484D;border-color:#E5484D}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:70;background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;max-width:calc(100vw - 32px);text-align:center}
+.view{display:flex;flex-direction:column;gap:14px}
+.view h2{font-family:var(--display);font-weight:400;font-size:28px;margin:4px 0 0}
+.post{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:8px}
+.post .who{display:flex;align-items:center;gap:10px}
+.post .who i,.av{font-style:normal;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;flex:0 0 auto}
+.post .who b{display:block}
+.post .who small{color:var(--muted)}
+.post .em{font-size:38px;line-height:1}
+.post .txt{white-space:pre-wrap;overflow-wrap:anywhere}
+.post .acts{display:flex;gap:8px;flex-wrap:wrap}
+.chip-place{display:inline-flex;gap:6px;align-items:center;background:var(--sunk);border-radius:12px;padding:6px 10px;font-size:13px;font-weight:600}
+.linkbtn{border:0;background:none;color:var(--muted);font-size:12.5px;text-decoration:underline;padding:2px}
+.compose{display:flex;flex-direction:column;gap:10px}
+.compose textarea,.cm-form textarea{width:100%;min-height:76px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface);resize:vertical}
+.emo{display:flex;gap:6px;flex-wrap:wrap}
+.emo button{font-size:22px;border:1px solid var(--line);background:var(--sunk);border-radius:12px;padding:6px 9px}
+.emo button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--accent);background:var(--surface)}
+.stars{display:flex;gap:2px}
+.stars button{border:0;background:none;font-size:26px;padding:0 2px;color:var(--line)}
+.stars button[aria-pressed="true"]{color:var(--sun)}
+.cm{border-bottom:1px solid var(--line);padding:10px 0;display:flex;flex-direction:column;gap:4px}
+.cm:last-child{border-bottom:0}
+.cm .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.cm .top small{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stats b{display:block;font-family:var(--display);font-weight:400;font-size:26px;color:var(--accent)}
+.stats span{font-size:12px;color:var(--muted)}
+.mini{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mini span{min-width:0;overflow-wrap:anywhere}
+.mini small{display:block;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:18px;border:1px dashed var(--line);border-radius:12px}
 .vote .vb{flex-wrap:wrap;justify-content:flex-end}
 .vote .vb button{font-weight:600;transition:transform .12s}
 .vote .vb button:active{transform:scale(.92)}
@@ -228,6 +271,11 @@ footer a{color:inherit}
   <div class="tagline" aria-label="Split. Plan. Out. Together."><span><b>S</b>plit</span><i>·</i><span><b>P</b>lan</span><i>·</i><span><b>O</b>ut</span><i>·</i><span><b>T</b>ogether</span><em id="tagTr"></em></div>
   <div class="demo" id="demoNote"></div>
 
+  <nav class="mainnav" id="mainNav" aria-label="Main">
+    <button data-v="explore" id="nv-explore"></button><button data-v="feed" id="nv-feed"></button><button data-v="me" id="nv-me"></button><a href="blog/" id="nv-blog"></a>
+  </nav>
+
+  <div id="vExplore">
   <section class="hero">
     <div class="hero-art"><img src="img/friends-table.jpg" alt="Friends sharing a meal outdoors" fetchpriority="high" width="1000" height="667"></div>
     <h2 id="heroT"></h2><p id="heroP"></p>
@@ -295,12 +343,19 @@ footer a{color:inherit}
       <p class="note" id="bzMsg" role="status"></p>
     </form>
   </section>
+  </div>
+
+  <section id="vFeed" class="view" hidden></section>
+  <section id="vMe" class="view" hidden></section>
 
   <footer>
     <span id="foot1"></span>
     <span id="foot2"></span>
   </footer>
 </div>
+
+<div class="sheet-bg" id="cmBg" hidden><div class="sheet" role="dialog" aria-modal="true" id="cmSheet"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <div class="sheet-bg" id="authBg" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="authT">
@@ -580,6 +635,14 @@ Object.assign(T.pt.tg,{nature:"Natureza",lake:"Lago",forest:"Floresta"});
 Object.assign(T.ar,{soon:"مدن أخرى",soonS:"قريباً"});Object.assign(T.fr,{soon:"Autres villes",soonS:"Bientôt"});Object.assign(T.en,{soon:"More cities",soonS:"Coming soon"});
 Object.assign(T.es,{soon:"Más ciudades",soonS:"Próximamente"});Object.assign(T.pt,{soon:"Mais cidades",soonS:"Em breve"});
 
+/* ---------- Navigation strings ---------- */
+const NAV={
+ ar:{explore:"🔎 استكشف",feed:"📣 الفيد",me:"👤 فضائي",blog:"📝 المدونة",near:"📍 قريب مني",nearS:"حسب موقعك",more:n=>"شوف "+n+" بلايص أخرى"},
+ fr:{explore:"🔎 Explorer",feed:"📣 Feed",me:"👤 Mon espace",blog:"📝 Blog",near:"📍 Près de moi",nearS:"Selon ta position",more:n=>"Voir "+n+" lieux de plus"},
+ en:{explore:"🔎 Explore",feed:"📣 Feed",me:"👤 My space",blog:"📝 Blog",near:"📍 Near me",nearS:"Use my location",more:n=>"Show "+n+" more places"},
+ es:{explore:"🔎 Explorar",feed:"📣 Feed",me:"👤 Mi espacio",blog:"📝 Blog",near:"📍 Cerca de mí",nearS:"Según tu ubicación",more:n=>"Ver "+n+" sitios más"},
+ pt:{explore:"🔎 Explorar",feed:"📣 Feed",me:"👤 O meu espaço",blog:"📝 Blog",near:"📍 Perto de mim",nearS:"Pela tua localização",more:n=>"Ver mais "+n+" sítios"}};
+
 /* ---------- Fun layer strings ---------- */
 const FUN={
  ar:{yesT:"واحد البلان! 🎉",yesP:"تزاد صوتك. يلا نخرجو!",noT:"ماشي مشكل 😌",noP:"المرة الجاية إن شاء الله.",react:"بعث رياكشن",crew:"شكون جاي",locked:"البلان تقاد! نتلاقاو تما ✨",of:(a,b)=>a+" من "+b+" موافقين"},
@@ -657,6 +720,7 @@ function card(p,L){
    <button class="add" aria-pressed="${inPlan}">${inPlan?L.added:L.add}</button>`;
   d.querySelector(".name").textContent=p.n;
   d.querySelector(".add").onclick=()=>{S.plan=inPlan?S.plan.filter(x=>x!==p.id):[...S.plan,p.id];render()};
+  if(window.SX)SX.decorate(d,p);
   return d;
 }
 
@@ -675,7 +739,9 @@ function render(){
   const cc=$("cityChips");cc.innerHTML="";
   CITIES.forEach(([k])=>{const b=document.createElement("button");b.className="city";b.setAttribute("aria-pressed",String(k===S.city));
     b.innerHTML=`<b></b><small class="num">${L.places(fmt(P.filter(p=>p.y===k).length))}</small>`;b.querySelector("b").textContent=cityName(k);
-    b.onclick=()=>{if(S.city!==k){S.city=k;S.plan=[];S.votes={};S.friend=false;render()}};cc.appendChild(b)});
+    b.onclick=()=>{if(S.city!==k){S.city=k;S.plan=[];S.votes={};S.friend=false;S.showN=8;render()}};cc.appendChild(b)});
+  const nm=document.createElement("button");nm.className="city near";nm.innerHTML=`<b></b><small></small>`;nm.querySelector("b").textContent=(NAV[S.lang]||NAV.en).near;nm.querySelector("small").textContent=(NAV[S.lang]||NAV.en).nearS;
+  nm.onclick=()=>window.SX?SX.nearMe():0;cc.prepend(nm);
   const soon=document.createElement("button");soon.className="city soon";soon.disabled=true;soon.innerHTML=`<b>${L.soon}</b><small>${L.soonS}</small>`;cc.appendChild(soon);
 
   // business section
@@ -703,7 +769,8 @@ function render(){
   const okL=shown.filter(p=>fitOf(p)!=="over").sort((a,b)=>(fitOf(a)==="ok"?0:1)-(fitOf(b)==="ok"?0:1)||b.p[1]-a.p[1]);
   const overL=shown.filter(p=>fitOf(p)==="over").sort((a,b)=>a.p[0]-b.p[0]);
   $("resT").textContent=L.resT; $("resN").textContent=L.resN(fmt(okL.length));
-  const list=$("list");list.innerHTML="";okL.forEach(p=>list.appendChild(card(p,L)));
+  const list=$("list");list.innerHTML="";S.showN=S.showN||8;okL.slice(0,S.showN).forEach(p=>list.appendChild(card(p,L)));
+  if(okL.length>S.showN){const mb=document.createElement("button");mb.className="btn ghost more";mb.textContent=(NAV[S.lang]||NAV.en).more(okL.length-S.showN);mb.onclick=()=>{S.showN+=8;render()};list.appendChild(mb)}
   const ol=$("overList");ol.innerHTML="";overL.forEach(p=>ol.appendChild(card(p,L)));
   $("overWrap").hidden=!overL.length; $("overSum").textContent=L.overSum(fmt(overL.length));
 
@@ -760,6 +827,12 @@ function render(){
   }else{st.innerHTML=`<p style="margin:auto;text-align:center">${L.sEmpty}</p>`}
   $("storyBtn").disabled=!has;
 
+  // views + nav
+  const N=NAV[S.lang]||NAV.en;S.view=S.view||"explore";
+  ["explore","feed","me"].forEach(v=>{const b=$("nv-"+v);b.textContent=N[v];b.setAttribute("aria-current",String(S.view===v))});$("nv-blog").textContent=N.blog;
+  $("vExplore").hidden=S.view!=="explore";$("vFeed").hidden=S.view!=="feed";$("vMe").hidden=S.view!=="me";$("tray").hidden=S.view!=="explore";
+  if(window.SX)SX.render();
+
   // footer
   $("foot1").textContent=L.foot1;
   const f2=$("foot2");f2.textContent=L.foot2;
@@ -767,6 +840,7 @@ function render(){
 }
 
 /* ---------- Events ---------- */
+document.querySelectorAll("#mainNav button").forEach(b=>b.onclick=()=>{S.view=b.dataset.v;if(window.SX&&SX.refreshMe&&S.view==="me")SX.refreshMe();render();scrollTo({top:0})});
 $("minus").onclick=()=>{S.people=Math.max(1,S.people-1);render()};
 $("plus").onclick=()=>{S.people=Math.min(12,S.people+1);render()};
 $("budget").addEventListener("input",e=>{const v=parseInt(e.target.value,10);S.budget=isNaN(v)||v<0?0:v;render()});
@@ -791,9 +865,11 @@ $("friendBtn").onclick=()=>{S.friend=true;render();$("friendView").scrollIntoVie
 
 /* start with an example plan so the first view shows the full flow */
 S.plan=[24,6];
+try{const qc=new URLSearchParams(location.search).get("city");if(qc&&CITIES.some(c=>c[0]===qc)){S.city=qc;S.plan=[]}}catch(e){}
 render();
 </script>
 
 <script type="module" src="js/kharja-firebase.js"></script>
+<script type="module" src="js/kharja-social.js"></script>
 </body>
 </html>

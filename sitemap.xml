@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://yopisimoni.github.io/hungingout/</loc><lastmod>2026-10-16</lastmod></url>
+  <url><loc>https://yopisimoni.github.io/hungingout/blog/</loc><lastmod>2026-10-16</lastmod></url>
+  <url>
+    <loc>https://yopisimoni.github.io/hungingout/blog/que-faire-a-khenifra.html</loc><lastmod>2026-10-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yopisimoni.github.io/hungingout/blog/que-faire-a-khenifra.html"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://yopisimoni.github.io/hungingout/blog/khenifra-ar.html"/>
+  </url>
+  <url>
+    <loc>https://yopisimoni.github.io/hungingout/blog/khenifra-ar.html</loc><lastmod>2026-10-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://yopisimoni.github.io/hungingout/blog/khenifra-ar.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://yopisimoni.github.io/hungingout/blog/que-faire-a-khenifra.html"/>
+  </url>
+</urlset>

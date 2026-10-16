@@ -1,37 +1,79 @@
 rules_version = '2';
-
-// Kharja – Firestore security rules (draft, applied once Firebase is connected)
-// Principle: everyone can read public places; people only change their own data.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Public catalogue of places. Edited by the team only (from the console / admin tools).
+    function signedIn() { return request.auth != null; }
+    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // Places catalogue (read-only from the app) + public likes and reviews per place.
     match /places/{placeId} {
       allow read: if true;
       allow write: if false;
+
+      match /likes/{uid} {
+        allow read: if true;
+        allow create, update: if isMe(uid) && request.resource.data.keys().hasOnly(['at']);
+        allow delete: if isMe(uid);
+      }
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if signedIn()
+                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'stars', 'at'])
+                      && request.resource.data.uid == request.auth.uid
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 500
+                      && request.resource.data.name is string && request.resource.data.name.size() <= 80
+                      && request.resource.data.stars is int && request.resource.data.stars >= 1 && request.resource.data.stars <= 5;
+        allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+        allow update: if false;
+      }
     }
 
-    // Private profile of each user.
+    // Each user's private space: profile, favorites, likes mirror, comments mirror.
     match /users/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if isMe(uid);
+      match /{document=**} {
+        allow read, write: if isMe(uid);
+      }
     }
 
-    // Plans are shared by link: anyone with the link can open one plan,
-    // but nobody can list all plans. Only the owner can change or delete it.
+    // Plans: open by link, owner can list their own, only owner edits.
     match /plans/{planId} {
       allow get: if true;
-      allow list: if false;
-      allow create: if request.auth != null
+      allow list: if signedIn() && resource.data.owner == request.auth.uid;
+      allow create: if signedIn()
                     && request.resource.data.owner == request.auth.uid
                     && request.resource.data.stops is list
                     && request.resource.data.stops.size() <= 6;
-      allow update, delete: if request.auth != null && resource.data.owner == request.auth.uid;
+      allow update, delete: if signedIn() && resource.data.owner == request.auth.uid;
 
-      // One vote per signed-in person per plan.
       match /votes/{uid} {
         allow get, list: if true;
-        allow write: if request.auth != null && request.auth.uid == uid;
+        allow write: if isMe(uid);
       }
+    }
+
+    // Public feed of shared places.
+    match /feed/{postId} {
+      allow read: if true;
+      allow create: if signedIn()
+                    && request.resource.data.keys().hasOnly(['uid', 'name', 'pid', 'city', 'emoji', 'text', 'at'])
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 280
+                    && request.resource.data.name is string && request.resource.data.name.size() <= 80
+                    && request.resource.data.emoji is string && request.resource.data.emoji.size() <= 8;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+      allow update: if false;
+    }
+
+    // Reports on posts / reviews: write-only, read from the console.
+    match /reports/{id} {
+      allow create: if signedIn()
+                    && request.resource.data.keys().hasOnly(['kind', 'ref', 'uid', 'at'])
+                    && request.resource.data.uid == request.auth.uid;
+      allow read, update, delete: if false;
     }
 
     // "List my place" requests from venue owners: write-only from the app.
