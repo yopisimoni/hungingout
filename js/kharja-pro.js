@@ -255,6 +255,6 @@ function renderHook() {
   if (S.view === "pro") renderPro();
 }
 
-window.VX = { decorate, render: renderHook };
+window.VX = { decorate, render: renderHook, openVenue };
 if (new URLSearchParams(location.search).has("pro")) S.view = "pro";
 render();

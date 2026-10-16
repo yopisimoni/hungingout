@@ -384,8 +384,72 @@ body{font-size:15.5px;letter-spacing:.005em}
   border:1px solid var(--line);border-radius:24px;padding:12px 14px;
   background:color-mix(in srgb,var(--surface) 93%,transparent);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);
   box-shadow:0 20px 50px -18px rgb(12 16 48 / .45)}
+/* ===== Travel-style home (Moroccan) ===== */
+.home-top{display:flex;flex-direction:column;gap:14px}
+.ht-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.ht-hi{font-family:var(--display);font-weight:700;font-size:30px;margin:0;line-height:1.1}
+.ht-sub{margin:2px 0 0;color:var(--muted)}
+.ht-av{width:48px;height:48px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:19px;box-shadow:var(--shadow);flex:0 0 auto}
+.ht-search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:12px 16px}
+.ht-search:focus-within{border-color:var(--accent)}
+.ht-search input{border:0;background:none;outline:none;flex:1;min-width:0;font-size:16px}
+.ht-pills{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.ht-pills::-webkit-scrollbar{display:none}
+.ht-pill{flex:0 0 auto;border:0;border-radius:14px;padding:11px 18px;font-weight:600;background:var(--surface);color:var(--muted);box-shadow:0 1px 0 var(--line)}
+.ht-pill[aria-pressed="true"]{background:var(--fg);color:var(--bg);box-shadow:0 10px 20px -12px rgb(12 16 48 / .6)}
+.ht-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ht-h3{font-family:var(--display);font-weight:700;font-size:21px;margin:0}
+.ht-all{border:0;background:none;color:var(--muted);font-weight:600}
+.ht-rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 16px;margin-inline:-2px;scrollbar-width:none}
+.ht-rail::-webkit-scrollbar{display:none}
+.bc{position:relative;flex:0 0 72%;max-width:280px;aspect-ratio:3/4;border-radius:28px;scroll-snap-align:start;color:#fff;cursor:pointer;overflow:hidden;
+  box-shadow:0 18px 34px -18px rgb(12 16 48 / .7);transition:transform .2s}
+.bc:active{transform:scale(.97)}
+.bc-emo{position:absolute;inset:18% 0 auto;text-align:center;font-size:76px;filter:drop-shadow(0 10px 18px rgb(0 0 0 / .35))}
+.bc-fav,.dt-btn{position:absolute;top:14px;inset-inline-end:14px;width:42px;height:42px;border-radius:50%;border:0;display:grid;place-items:center;font-size:18px;
+  background:rgb(255 255 255 / .22);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff}
+.bc-glass,.dt-glass{position:absolute;inset:auto 12px 12px 12px;border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;
+  background:rgb(12 16 48 / .38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.bc-glass b{font-size:16px;line-height:1.25}
+.bc-row{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;opacity:.92;flex-wrap:wrap}
+#list .card{cursor:pointer}
+.dt{position:fixed;inset:0;z-index:55;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;
+  padding:max(10px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(96px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.dt.dt-in{animation:dtIn .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes dtIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.dt-hero{position:relative;min-height:56vh;border-radius:32px;overflow:hidden;color:#fff;max-width:640px;width:100%;margin:0 auto;flex:0 0 auto;box-shadow:0 24px 40px -24px rgb(12 16 48 / .8)}
+.dt-back{inset-inline-start:16px;inset-inline-end:auto;top:16px;font-size:26px;line-height:1}
+.dt-save{top:16px;inset-inline-end:16px}
+.dt-emo{position:absolute;inset:20% 0 auto;text-align:center;font-size:110px;filter:drop-shadow(0 14px 24px rgb(0 0 0 / .35))}
+.dt-glass{flex-direction:row;justify-content:space-between;align-items:flex-end;inset:auto 16px 16px 16px;padding:14px 16px}
+.dt-glass h2{margin:0 0 4px;font-family:var(--display);font-size:24px;line-height:1.15}
+.dt-glass span{font-size:13.5px;opacity:.9}
+.dt-price{text-align:end;flex:0 0 auto}
+.dt-price small{display:block;font-size:12px;opacity:.8}
+.dt-price b{font-size:19px}
+.dt-body{max-width:640px;width:100%;margin:18px auto 0;display:flex;flex-direction:column;gap:14px;padding-inline:6px}
+.dt-tabs{display:flex;gap:22px}
+.dt-tabs button{border:0;background:none;padding:0 0 6px;font-family:var(--display);font-weight:700;font-size:20px;color:var(--muted);border-bottom:2px solid transparent}
+.dt-tabs button[aria-pressed="true"]{color:var(--fg);border-color:var(--sun)}
+.dt-stats{display:flex;gap:10px;flex-wrap:wrap}
+.dt-stat{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border-radius:14px;padding:8px 12px;box-shadow:0 1px 0 var(--line);font-weight:600;font-size:14px}
+.dt-stat i{font-style:normal}
+.dt-desc{color:var(--muted);margin:0;line-height:1.65;max-width:60ch}
+.dt-links{display:flex;gap:8px;flex-wrap:wrap}
+.dt-cta{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(600px,calc(100vw - 32px));z-index:56;
+  border:0;border-radius:20px;padding:18px;font-weight:700;font-size:17px;background:var(--fg);color:var(--bg);box-shadow:0 16px 36px -14px rgb(12 16 48 / .7)}
+@media (prefers-reduced-motion:reduce){.dt.dt-in{animation:none}}
+/* bottom tab bar on phones */
+@media (max-width:760px){
+  .mainnav{position:fixed;top:auto;left:max(10px,env(safe-area-inset-left,0px));right:max(10px,env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));
+    z-index:30;border-radius:22px;padding:6px;justify-content:space-between;background:color-mix(in srgb,var(--surface) 94%,transparent);
+    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 14px 34px -14px rgb(12 16 48 / .55)}
+  .mainnav button,.mainnav a{flex:1 1 0;font-size:11.5px;padding:8px 4px;white-space:normal;line-height:1.2}
+  .tray{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  body{padding-bottom:230px}
+}
 .tray{transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
-.tray.dock-away{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
+.tray.dock-away,.tray.dock-empty{transform:translateY(calc(100% + 24px));opacity:0;pointer-events:none}
 .btn.wa{border-radius:14px}
 .btn.ghost{background:var(--sunk);border-radius:14px}
 .btn.cta{border-radius:14px}
@@ -417,6 +481,7 @@ body{font-size:15.5px;letter-spacing:.005em}
   </nav>
 
   <div id="vExplore">
+  <section id="homeTop" class="home-top"></section>
   <section class="hero">
     <div class="hero-art"><img src="img/friends-table.jpg" alt="Friends sharing a meal outdoors" fetchpriority="high" width="1000" height="667"></div>
     <h2 id="heroT"></h2><p id="heroP"></p>
@@ -913,7 +978,7 @@ function render(){
   }else{box.className="suggest empty";box.innerHTML=`<h3>${L.sugT}</h3><p style="margin:0">${L.sugNone}</p>`}
 
   // lists
-  const shown=P.filter(p=>p.y===S.city&&vibeOk(p)&&catOk(p));
+  const shown=P.filter(p=>p.y===S.city&&vibeOk(p)&&catOk(p)&&(!S.q||(p.n+" "+p.a).toLowerCase().includes(S.q)));
   const okL=shown.filter(p=>fitOf(p)!=="over").sort((a,b)=>(fitOf(a)==="ok"?0:1)-(fitOf(b)==="ok"?0:1)||b.p[1]-a.p[1]);
   const overL=shown.filter(p=>fitOf(p)==="over").sort((a,b)=>a.p[0]-b.p[0]);
   $("resT").textContent=L.resT; $("resN").textContent=L.resN(fmt(okL.length));
@@ -982,6 +1047,7 @@ function render(){
   if(window.SX)SX.render();
   if(window.MX&&S.view==="meet")MX.render();
   if(window.VX)VX.render();
+  if(window.HX)HX.render();
 
   // footer
   $("foot1").textContent=L.foot1;
@@ -1029,5 +1095,7 @@ new IntersectionObserver(function(e){t.classList.toggle("dock-away",e[0].interse
 <script type="module" src="js/kharja-social.js"></script>
 <script type="module" src="js/kharja-meet.js"></script>
 <script type="module" src="js/kharja-pro.js"></script>
+<script src="js/kharja-home.js"></script>
+<div class="dt" id="detail" hidden role="dialog" aria-modal="true"></div>
 </body>
 </html>

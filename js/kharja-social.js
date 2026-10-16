@@ -381,5 +381,5 @@ function renderViews() {
   else if (S.view === "me") renderMe();
 }
 
-window.SX = { decorate, nearMe, render: renderViews, refreshMe: () => { meFor = null; }, compose: pid => needUser(() => openComposer(pid)) };
+window.SX = { decorate, nearMe, render: renderViews, openComments, isFav: pid => favs.has(String(pid)), fav: pid => needUser(() => toggleFav(String(pid))), refreshMe: () => { meFor = null; }, compose: pid => needUser(() => openComposer(pid)) };
 render();
