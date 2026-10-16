@@ -68,6 +68,63 @@ service cloud.firestore {
       allow update: if false;
     }
 
+    // Open outings: small public-place group outings, host approves each member.
+    match /meetups/{mid} {
+      function mt() { return get(/databases/$(database)/documents/meetups/$(mid)).data; }
+      function isHost() { return signedIn() && mt().host == request.auth.uid; }
+      function isMember() {
+        return signedIn() && (isHost() ||
+          (exists(/databases/$(database)/documents/meetups/$(mid)/members/$(request.auth.uid)) &&
+           get(/databases/$(database)/documents/meetups/$(mid)/members/$(request.auth.uid)).data.status == 'in'));
+      }
+
+      allow read: if true;
+      allow create: if signedIn()
+                    && request.resource.data.keys().hasOnly(['host', 'hostName', 'city', 'pid', 'when', 'size', 'note', 'status', 'at'])
+                    && request.resource.data.host == request.auth.uid
+                    && request.resource.data.size is int && request.resource.data.size >= 3 && request.resource.data.size <= 8
+                    && request.resource.data.when is timestamp && request.resource.data.when > request.time
+                    && request.resource.data.note is string && request.resource.data.note.size() <= 200
+                    && request.resource.data.status == 'open';
+      allow update: if signedIn() && resource.data.host == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+                    && request.resource.data.status in ['open', 'cancelled'];
+      allow delete: if false;
+
+      match /members/{uid} {
+        allow read: if signedIn();
+        // join request (pending) by the person themselves; the host adds themself as 'in' when creating
+        allow create: if isMe(uid) && request.resource.data.adult == true
+                      && request.resource.data.keys().hasOnly(['name', 'status', 'adult', 'at'])
+                      && (request.resource.data.status == 'pending'
+                          || (request.resource.data.status == 'in'
+                              && getAfter(/databases/$(database)/documents/meetups/$(mid)).data.host == request.auth.uid));
+        // only the host changes someone's status
+        allow update: if isHost()
+                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+                      && request.resource.data.status in ['in', 'declined', 'pending'];
+        allow delete: if isMe(uid);
+      }
+
+      match /chat/{cid} {
+        allow read: if isMember();
+        allow create: if isMember()
+                      && request.resource.data.keys().hasOnly(['uid', 'name', 'text', 'at'])
+                      && request.resource.data.uid == request.auth.uid
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 300;
+        allow update, delete: if false;
+      }
+
+      match /reviews/{uid} {
+        allow read: if isMember();
+        allow create, update: if isMe(uid) && isMember()
+                      && request.resource.data.keys().hasOnly(['stars', 'text', 'at'])
+                      && request.resource.data.stars is int && request.resource.data.stars >= 1 && request.resource.data.stars <= 5
+                      && request.resource.data.text is string && request.resource.data.text.size() <= 300;
+      }
+    }
+
     // Reports on posts / reviews: write-only, read from the console.
     match /reports/{id} {
       allow create: if signedIn()

@@ -378,5 +378,5 @@ function renderViews() {
   else if (S.view === "me") renderMe();
 }
 
-window.SX = { decorate, nearMe, render: renderViews, refreshMe: () => { meFor = null; } };
+window.SX = { decorate, nearMe, render: renderViews, refreshMe: () => { meFor = null; }, compose: pid => needUser(() => openComposer(pid)) };
 render();
